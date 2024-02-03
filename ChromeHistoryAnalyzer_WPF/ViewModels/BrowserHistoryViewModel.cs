@@ -2,7 +2,7 @@
 
 namespace ChromeHistoryAnalyzer_WPF.ViewModels
 {
-    public class ChromeHistoryViewModel : ViewModelBase
+    public class BrowserHistoryViewModel : ViewModelBase
     {
 		private ObservableCollection<HistoryItemViewModel>? _historyItems;
 		public ObservableCollection<HistoryItemViewModel>? HistoryItems

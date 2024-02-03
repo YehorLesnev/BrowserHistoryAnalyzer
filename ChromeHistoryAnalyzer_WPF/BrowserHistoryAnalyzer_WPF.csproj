@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ChromeHistoryParser_ClassLib\ChromeHistoryParser_ClassLib.csproj" />
+    <ProjectReference Include="..\ChromeHistoryParser_ClassLib\BrowserHistoryParser_ClassLib.csproj" />
   </ItemGroup>
 
 </Project>

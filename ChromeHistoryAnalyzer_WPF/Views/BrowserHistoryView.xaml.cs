@@ -3,11 +3,11 @@
 namespace ChromeHistoryAnalyzer_WPF.Views
 {
     /// <summary>
-    /// Interaction logic for ChromeHistoryView.xaml
+    /// Interaction logic for BrowserHistoryView.xaml
     /// </summary>
-    public partial class ChromeHistoryView : UserControl
+    public partial class BrowserHistoryView : UserControl
     {
-        public ChromeHistoryView()
+        public BrowserHistoryView()
         {
             InitializeComponent();
         }
