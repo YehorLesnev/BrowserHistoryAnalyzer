@@ -15,10 +15,10 @@ namespace ChromeHistoryParser
 
         /// <summary>
         /// Returns List of HistoryItem objects
-        /// Opens SQLiteConnection to user's browser history db corresponding to \Google\Chrome\User Data\Default\History
+        /// Opens SQLiteConnection to user's browser history file db corresponding to \Google\Chrome\User Data\Default\History
         /// </summary>
         /// <returns>List&lt;HistoryItem&gt;</returns>
-        /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database
+        /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)
         /// Closing Chrome browser must solve this error
         /// </exception>
         public List<HistoryItem> GetHistoryItems()

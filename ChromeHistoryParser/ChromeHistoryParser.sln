@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeHistoryParser", "ChromeHistoryParser.csproj", "{6BC2E85D-09CD-4454-9292-0D9BF2BD0E02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChromeHistoryParser", "ChromeHistoryParser.csproj", "{6BC2E85D-09CD-4454-9292-0D9BF2BD0E02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeHistoryAnalyzer_WPF", "..\ChromeHistoryAnalyzer_WPF\ChromeHistoryAnalyzer_WPF.csproj", "{FF588C12-A212-4681-81D2-48198B17A57F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6BC2E85D-09CD-4454-9292-0D9BF2BD0E02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BC2E85D-09CD-4454-9292-0D9BF2BD0E02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BC2E85D-09CD-4454-9292-0D9BF2BD0E02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF588C12-A212-4681-81D2-48198B17A57F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF588C12-A212-4681-81D2-48198B17A57F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF588C12-A212-4681-81D2-48198B17A57F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF588C12-A212-4681-81D2-48198B17A57F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
