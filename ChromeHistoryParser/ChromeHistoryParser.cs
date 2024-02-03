@@ -53,6 +53,8 @@ namespace ChromeHistoryParser
                 DateTime localTime = TimeZoneInfo.ConvertTimeFromUtc(gmtTime, TimeZoneInfo.Local);
                 historyItem.VisitedTime = localTime;
 
+                historyItem.VisitCount = (long) historyRow["visit_count"];
+                historyItem.TypedCount = (long) historyRow["typed_count"];
                 historyItems.Add(historyItem);
             }
 
