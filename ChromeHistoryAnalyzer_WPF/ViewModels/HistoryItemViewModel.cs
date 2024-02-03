@@ -1,4 +1,6 @@
-﻿namespace ChromeHistoryAnalyzer_WPF.ViewModels
+﻿using ChromeHistoryParser_ClassLib;
+
+namespace ChromeHistoryAnalyzer_WPF.ViewModels
 {
     public class HistoryItemViewModel : ViewModelBase
     {
@@ -64,6 +66,17 @@
             set
             {
                 _typedCount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private BrowserName? _browserName;
+        public BrowserName? BrowserName
+        {
+            get => _browserName;
+            set
+            {
+                _browserName = value;
                 OnPropertyChanged();
             }
         }
