@@ -8,5 +8,6 @@
         public DateTime VisitedTime { get; set; }
         public long VisitCount { get; set; }
         public long TypedCount { get; set; }
+        public BrowserName BrowserName { get; set; }
     }
 }

@@ -42,7 +42,8 @@ namespace ChromeHistoryParser_ClassLib
                 HistoryItem historyItem = new HistoryItem
                 {
                     URL = new Uri(Convert.ToString(historyRow["url"])),
-                    Title = Convert.ToString(historyRow["title"])
+                    Title = Convert.ToString(historyRow["title"]),
+                    BrowserName = BrowserName.Chrome
                 };
 
                 //Chrome stores time elapsed since Jan 1, 1601(UTC format) in microseconds
@@ -97,7 +98,8 @@ namespace ChromeHistoryParser_ClassLib
                 HistoryItem historyItem = new HistoryItem
                 {
                     URL = new Uri(Convert.ToString(historyRow["url"])),
-                    Title = Convert.ToString(historyRow["title"])
+                    Title = Convert.ToString(historyRow["title"]),
+                    BrowserName = BrowserName.Edge
                 };
 
                 //Similar to Chrome, Edge stores time elapsed since Jan 1, 1601(UTC format) in microseconds
@@ -154,7 +156,8 @@ namespace ChromeHistoryParser_ClassLib
                 HistoryItem historyItem = new HistoryItem
                 {
                     URL = new Uri(Convert.ToString(historyRow["url"])),
-                    Title = Convert.ToString(historyRow["title"])
+                    Title = Convert.ToString(historyRow["title"]),
+                    BrowserName = BrowserName.Firefox
                 };
 
                 //Firefox stores time elapsed since the Unix epoch (January 1, 1970) in microseconds
