@@ -1,4 +1,8 @@
-﻿using ChromeHistoryParser_ClassLib;
+﻿using System.Collections.ObjectModel;
+using AutoMapper;
+using BrowserHistoryAnalyzer_WPF.Base.Mapping;
+using ChromeHistoryAnalyzer_WPF.ViewModels;
+using ChromeHistoryParser_ClassLib;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -18,14 +22,25 @@ namespace ChromeHistoryAnalyzer_WPF
             set { _mainwindow = value; }
         }
 
+        private readonly BrowserHistoryViewModel _browserHistoryViewModel = new();
+
         public App()
         {
-            mainwindow = new MainWindow();
+            mainwindow = new MainWindow()
+            {
+                DataContext = _browserHistoryViewModel
+            };
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             _mainwindow.Show();
+
+            // FOR TESTING ONLY !
+            Mapper _mapper = new Mapper(BrowserHistoryMappingConfig.GetConfig());
+            var parser = new BrowserHistoryParser();
+            _browserHistoryViewModel.HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(parser.GetAllHistoryItems());
+            //
         }
     }
 }

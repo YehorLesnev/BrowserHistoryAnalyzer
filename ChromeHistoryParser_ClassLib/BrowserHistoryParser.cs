@@ -9,7 +9,17 @@ namespace ChromeHistoryParser_ClassLib
         private readonly string _edgeHistoryFile = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Microsoft\Edge\User Data\Default\History";
         private readonly string _firefoxFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Mozilla\Firefox\Profiles\";
         private readonly string _firefoxHistoryFileName = @"places.sqlite";
+
         public List<HistoryItem> allHistoryItems { get; private set; } = new List<HistoryItem>();
+
+        public List<HistoryItem> GetAllHistoryItems()
+        {
+            GetСhromeHistoryItems();
+            GetEdgeHistoryItems();
+            GetFirefoxHistoryItems();
+
+            return this.allHistoryItems;
+        }
 
         /// <summary>
         /// Returns List of HistoryItem objects

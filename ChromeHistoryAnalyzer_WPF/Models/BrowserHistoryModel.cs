@@ -3,12 +3,12 @@
 
 namespace ChromeHistoryAnalyzer_WPF.Models
 {
-    public class ChromeHistoryModel
+    public class BrowserHistoryModel
     {
         public IEnumerable<HistoryItem>? HistoryItems { get; set; }
 
-        public ChromeHistoryModel() { }
-        public ChromeHistoryModel(IEnumerable<HistoryItem> historyItems)
+        public BrowserHistoryModel() { }
+        public BrowserHistoryModel(IEnumerable<HistoryItem> historyItems)
         {
             this.HistoryItems = historyItems;
         }

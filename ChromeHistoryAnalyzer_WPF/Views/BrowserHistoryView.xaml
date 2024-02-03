@@ -7,15 +7,19 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            <DataGrid>
-                <DataGrid.Columns>
-                    <DataGridTextColumn IsReadOnly="True" Header="Id" />
-                    <DataGridTextColumn IsReadOnly="True" Header="URL" />
-                    <DataGridTextColumn IsReadOnly="True" Header="Title" />
-                    <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" />
-                    <DataGridTextColumn IsReadOnly="True" Header="Visit Count" />
-                    <DataGridTextColumn IsReadOnly="True" Header="Typed Count" />
-                </DataGrid.Columns>
-            </DataGrid>
+        <DataGrid
+                x:Name="DataGridBrowserHistory"
+                ItemsSource="{Binding HistoryItems}"
+                AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn IsReadOnly="True" Header="Id" Binding="{Binding Id}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding VisitedTime}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Browser" Binding="{Binding BrowserName}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Visit Count" Binding="{Binding VisitCount}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Typed Count" Binding="{Binding TypedCount}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
