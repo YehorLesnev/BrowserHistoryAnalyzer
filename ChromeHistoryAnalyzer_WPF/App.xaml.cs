@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using ChromeHistoryParser_ClassLib;
+using System.Configuration;
 using System.Data;
 using System.Windows;
 
@@ -18,7 +19,7 @@ namespace ChromeHistoryAnalyzer_WPF
         }
 
         public App()
-        { 
+        {
             mainwindow = new MainWindow();
         }
 
