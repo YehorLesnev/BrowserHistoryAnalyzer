@@ -50,6 +50,8 @@ namespace ChromeHistoryParser_ClassLib
 
                 historyItem.VisitCount = (long) historyRow["visit_count"];
                 historyItem.TypedCount = (long) historyRow["typed_count"];
+                historyItem.Id = (long)historyRow["id"];
+                
                 historyItems.Add(historyItem);
             }
 
