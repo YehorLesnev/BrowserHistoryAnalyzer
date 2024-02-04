@@ -25,7 +25,7 @@ namespace ChromeHistoryAnalyzer_WPF.ViewModels
                 OnPropertyChanged();
             }
         }
-
+       
         private string? _title;
         public string? Title
         {

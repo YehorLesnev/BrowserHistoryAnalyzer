@@ -13,8 +13,8 @@
                 AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Id" Binding="{Binding Id}"/>
-                <DataGridTextColumn IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
-                <DataGridTextColumn IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
+                <DataGridTextColumn SortMemberPath="Url.AbsoluteUri" Width="300" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
+                <DataGridTextColumn Width="200" IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding VisitedTime}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Browser" Binding="{Binding BrowserName}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Visit Count" Binding="{Binding VisitCount}"/>
