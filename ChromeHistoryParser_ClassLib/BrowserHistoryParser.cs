@@ -714,6 +714,123 @@ namespace BrowserHistoryParser_ClassLib
             return historyItems;
         }
 
+        /// <summary>
+        /// Returns List of HistoryItem objects whose URL contain one of strings in the first array 
+        /// and don't contain any of strings in the second array
+        /// <para>
+        /// Opens SQLiteConnection to user's Mozilla Firefox browser history file db corresponding to \Mozilla\Firefox\Profiles\%PROFILE_NAME%\places.sqlite
+        /// </para>
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///     Throws SQLiteException 'database is locked' exception if there's already opened connection to the database (history file).
+        ///     Closing Firefox browser must solve this error
+        ///     </para>
+        ///     <para>
+        ///         <example>
+        ///             <code>
+        ///             var historyItemsList = GetFirefoxHistoryItems(new string[]{"cat", "dog"}, new string[]{"bird", "fish"});
+        ///             //This will return all HistoryItems that contain word 'cat' or 'dog' and don't contain 'bird' and 'fish' in URL
+        ///             </code>
+        ///         </example>
+        ///     </para>
+        /// </remarks>
+        /// <param name="containOneOf">Array of strings that may contain in URL</param>
+        /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
+        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
+        public List<HistoryItem> GetFirefoxHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
+        {
+            List<HistoryItem> historyItems = new();
+
+            string firefoxHistoryFile = FindFirefoxProfileFolderPath(_firefoxFolder) + "\\" + _firefoxHistoryFileName;
+
+            SQLiteConnection connection = new SQLiteConnection
+                ("Data Source=" + firefoxHistoryFile + ";Version=3;New=False;Compress=True;");
+
+            connection.Open();
+            string query = "SELECT * FROM moz_places";
+
+            if (containOneOf.Length > 0 || dontContainAnyOf.Length > 0)
+            {
+                query += " WHERE";
+
+                if (containOneOf.Length > 0)
+                {
+                    query += " (";
+                    query += $" url LIKE '%{containOneOf[0]}%'";
+
+                    for (int i = 1; i < containOneOf.Length; ++i)
+                    {
+                        query += $" OR url LIKE '%{containOneOf[i]}%'";
+                    }
+
+                    query += " )";
+                }
+
+                if (containOneOf.Length > 0 && dontContainAnyOf.Length > 0)
+                {
+                    query += " AND";
+                }
+
+                if (dontContainAnyOf.Length > 0)
+                {
+                    query += " (";
+                    query += $" url NOT LIKE '%{dontContainAnyOf[0]}%'";
+
+                    for (int i = 1; i < dontContainAnyOf.Length; ++i)
+                    {
+                        query += $" AND url NOT LIKE '%{dontContainAnyOf[i]}%'";
+                    }
+
+                    query += " )";
+                }
+            }
+
+            query += " ORDER BY last_visit_date DESC";
+
+            SQLiteCommand comp = new SQLiteCommand(query, connection);
+            comp.CommandType = CommandType.Text;
+            SQLiteDataAdapter adapter = new SQLiteDataAdapter(comp);
+
+            DataTable dataset = new DataTable();
+            adapter.Fill(dataset);
+
+            foreach (DataRow historyRow in dataset.Rows)
+            {
+                HistoryItem historyItem = new HistoryItem
+                {
+                    URL = new Uri(Convert.ToString(historyRow["url"])),
+                    Title = Convert.ToString(historyRow["title"]),
+                    BrowserName = BrowserName.Firefox
+                };
+
+                //Firefox stores time elapsed since the Unix epoch (January 1, 1970) in microseconds
+                var time = historyRow["last_visit_date"];
+                if (time is not DBNull)
+                {
+                    long utcMicroSeconds = Convert.ToInt64(time);
+
+                    //Windows file time UTC is in nanoseconds, so multiplying by 10
+                    DateTime gmtTime = DateTime.FromFileTimeUtc(10 * utcMicroSeconds);
+
+                    //Converting to local time
+                    DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+                    DateTime localTime = epoch.AddSeconds(utcMicroSeconds / 1000000).ToLocalTime();
+                    historyItem.VisitedTime = localTime;
+                }
+
+                historyItem.VisitCount = (long)historyRow["visit_count"];
+                historyItem.TypedCount = (long)historyRow["typed"];
+                historyItem.Id = (long)historyRow["id"];
+
+                historyItems.Add(historyItem);
+                allHistoryItems.Add(historyItem);
+            }
+
+            return historyItems;
+        }
+
         private string FindFirefoxProfileFolderPath(string folderPath)
         {
             string[] directories = Directory.GetDirectories(folderPath);
