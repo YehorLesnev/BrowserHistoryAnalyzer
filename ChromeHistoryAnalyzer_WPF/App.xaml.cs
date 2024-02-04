@@ -37,7 +37,7 @@ namespace BrowserHistoryAnalyzer_WPF
             // FOR TESTING ONLY !
             Mapper _mapper = new Mapper(BrowserHistoryMappingConfig.GetConfig());
             var parser = new BrowserHistoryParser();
-            _browserHistoryViewModel.HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(parser.GetFirefoxHistoryItems(new string[]{"firefox"}, new string[]{"google"}));
+            _browserHistoryViewModel.HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(parser.GetChromeHistoryItems(new string[]{"firefox"}, new string[]{"google"}));
             //
         }
     }

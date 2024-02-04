@@ -14,7 +14,7 @@ namespace BrowserHistoryParser_ClassLib
 
         public List<HistoryItem> GetAllHistoryItems()
         {
-            GetСhromeHistoryItems();
+            GetChromeHistoryItems();
             GetEdgeHistoryItems();
             GetFirefoxHistoryItems();
 
@@ -33,7 +33,7 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetСhromeHistoryItems()
+        public List<HistoryItem> GetChromeHistoryItems()
         {
             List<HistoryItem> historyItems = new();
 
@@ -103,7 +103,7 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="mustContain">Determines whether the HistoryItem URL must contain one of the strings in the array</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetСhromeHistoryItems(string[] containOneOf, bool mustContain)
+        public List<HistoryItem> GetChromeHistoryItems(string[] containOneOf, bool mustContain)
         {
             List<HistoryItem> historyItems = new();
 
@@ -199,7 +199,7 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetСhromeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
+        public List<HistoryItem> GetChromeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
         {
             List<HistoryItem> historyItems = new();
 
