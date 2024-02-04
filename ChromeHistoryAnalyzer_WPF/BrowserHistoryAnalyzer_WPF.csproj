@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ChromeHistoryParser_ClassLib\BrowserHistoryParser_ClassLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Images\BrowserIcons\" />
+  </ItemGroup>
+
 </Project>
