@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ChromeHistoryAnalyzer_WPF.Models;
-using ChromeHistoryAnalyzer_WPF.ViewModels;
-using ChromeHistoryParser_ClassLib;
+using BrowserHistoryAnalyzer_WPF.Models;
+using BrowserHistoryAnalyzer_WPF.ViewModels;
+using BrowserHistoryParser_ClassLib;
 
 namespace BrowserHistoryAnalyzer_WPF.Base.Mapping
 {

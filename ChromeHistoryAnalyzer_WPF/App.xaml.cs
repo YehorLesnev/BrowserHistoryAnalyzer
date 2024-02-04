@@ -1,13 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows;
 using AutoMapper;
 using BrowserHistoryAnalyzer_WPF.Base.Mapping;
-using ChromeHistoryAnalyzer_WPF.ViewModels;
-using ChromeHistoryParser_ClassLib;
-using System.Configuration;
-using System.Data;
-using System.Windows;
+using BrowserHistoryAnalyzer_WPF.ViewModels;
+using BrowserHistoryParser_ClassLib;
 
-namespace ChromeHistoryAnalyzer_WPF
+namespace BrowserHistoryAnalyzer_WPF
 {
     /// <summary>
     /// Interaction logic for App.xaml

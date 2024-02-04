@@ -1,6 +1,6 @@
-﻿using ChromeHistoryParser_ClassLib;
+﻿using BrowserHistoryParser_ClassLib;
 
-namespace ChromeHistoryAnalyzer_WPF.ViewModels
+namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
     public class HistoryItemViewModel : ViewModelBase
     {

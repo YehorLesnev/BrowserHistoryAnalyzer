@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using BrowserHistoryAnalyzer_WPF.Base.Mapping;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using AutoMapper;
+using BrowserHistoryAnalyzer_WPF.Base.Mapping;
 
-namespace ChromeHistoryAnalyzer_WPF.ViewModels
+namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {

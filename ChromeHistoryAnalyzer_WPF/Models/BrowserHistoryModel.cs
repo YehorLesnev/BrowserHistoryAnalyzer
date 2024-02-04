@@ -1,7 +1,6 @@
-﻿using ChromeHistoryParser_ClassLib;
+﻿using BrowserHistoryParser_ClassLib;
 
-
-namespace ChromeHistoryAnalyzer_WPF.Models
+namespace BrowserHistoryAnalyzer_WPF.Models
 {
     public class BrowserHistoryModel
     {

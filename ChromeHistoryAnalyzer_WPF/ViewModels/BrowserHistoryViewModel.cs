@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace ChromeHistoryAnalyzer_WPF.ViewModels
+namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
     public class BrowserHistoryViewModel : ViewModelBase
     {

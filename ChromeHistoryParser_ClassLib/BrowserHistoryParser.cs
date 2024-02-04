@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SQLite;
 
-namespace ChromeHistoryParser_ClassLib
+namespace BrowserHistoryParser_ClassLib
 {
     public class BrowserHistoryParser
     {

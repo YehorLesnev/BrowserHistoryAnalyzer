@@ -1,4 +1,4 @@
-﻿namespace ChromeHistoryParser_ClassLib
+﻿namespace BrowserHistoryParser_ClassLib
 {
     public enum BrowserName
     {
