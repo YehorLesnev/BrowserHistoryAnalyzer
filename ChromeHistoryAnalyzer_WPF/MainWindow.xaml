@@ -6,7 +6,30 @@
         xmlns:views="clr-namespace:BrowserHistoryAnalyzer_WPF.Views"
         mc:Ignorable="d"
         Title="Browser History Analyzer" Height="450" Width="950">
+    
+    <Window.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding Path=GetAllHistory}"/>
+        <!--<KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="SaveAll"/>
+        <KeyBinding Key="S" Modifiers="Control" Command="SaveSelected"/>-->
+    </Window.InputBindings>
+    
     <Grid>
-        <views:BrowserHistoryView />
+        <DockPanel Grid.Row="0">
+            <Menu DockPanel.Dock="Top" FontSize="12">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Save All" InputGestureText="Ctrl+Shift+S"/>
+                    <MenuItem Header="_Save Selected Items" InputGestureText="Ctrl+S"/>
+                    <Separator/>
+                    <MenuItem Header="_Open URL in Web Browser" />
+                    <MenuItem Header="_Properties" />
+                    <Separator/>
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+                <MenuItem Header="_View">
+                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistory}"/>    
+                </MenuItem>
+            </Menu>
+            <views:BrowserHistoryView />
+        </DockPanel>
     </Grid>
 </Window>

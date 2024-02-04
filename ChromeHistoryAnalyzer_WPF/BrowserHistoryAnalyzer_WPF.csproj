@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Images\BrowserIcons\" />
+    <Folder Include="Views\Modals\" />
   </ItemGroup>
 
 </Project>
