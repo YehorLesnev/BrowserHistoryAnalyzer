@@ -37,7 +37,7 @@ namespace BrowserHistoryAnalyzer_WPF
             // FOR TESTING ONLY !
             Mapper _mapper = new Mapper(BrowserHistoryMappingConfig.GetConfig());
             var parser = new BrowserHistoryParser();
-            _browserHistoryViewModel.HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(parser.GetAllHistoryItems());
+            _browserHistoryViewModel.HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(parser.GetСhromeHistoryItems(new string[] {"speedtest", "youtube", "google" }, false));
             //
         }
     }
