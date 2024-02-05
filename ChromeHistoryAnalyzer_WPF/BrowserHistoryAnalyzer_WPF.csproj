@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Views\Modals\Warning.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
@@ -18,7 +22,11 @@
 
   <ItemGroup>
     <Folder Include="Images\BrowserIcons\" />
-    <Folder Include="Views\Modals\" />
+    <Folder Include="Images\Icons\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Views\Modals\Warning.png" />
   </ItemGroup>
 
 </Project>
