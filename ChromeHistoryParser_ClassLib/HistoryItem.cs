@@ -1,6 +1,6 @@
 ﻿namespace BrowserHistoryParser_ClassLib
 {
-    public class HistoryItem
+    public struct HistoryItem
     {
         public long Id { get; set; }
         public Uri URL { get; set; }

@@ -10,15 +10,14 @@ namespace BrowserHistoryParser_ClassLib
         private readonly string _firefoxFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Mozilla\Firefox\Profiles\";
         private readonly string _firefoxHistoryFileName = @"places.sqlite";
 
-        public List<HistoryItem> allHistoryItems { get; private set; } = new List<HistoryItem>();
-
-        public List<HistoryItem> GetAllHistoryItems()
+        public IEnumerable<HistoryItem> GetAllHistoryItems()
         {
-            GetChromeHistoryItems();
-            GetEdgeHistoryItems();
-            GetFirefoxHistoryItems();
+            List<HistoryItem> historyItems = new List<HistoryItem>();
+            historyItems.AddRange(GetChromeHistoryItems());
+            historyItems.AddRange(GetEdgeHistoryItems());
+            historyItems.AddRange(GetFirefoxHistoryItems());
 
-            return this.allHistoryItems;
+            return historyItems;
         }
 
         /// <summary>
@@ -33,9 +32,9 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetChromeHistoryItems()
+        public IEnumerable<HistoryItem> GetChromeHistoryItems()
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             SQLiteConnection connection = new SQLiteConnection
                 ("Data Source=" + _chromeHistoryFile + ";Version=3;New=False;Compress=True;");
@@ -73,7 +72,7 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
+
             }
 
             return historyItems;
@@ -103,9 +102,9 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="mustContain">Determines whether the HistoryItem URL must contain one of the strings in the array</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetChromeHistoryItems(string[] containOneOf, bool mustContain)
+        public IEnumerable<HistoryItem> GetChromeHistoryItems(string[] containOneOf, bool mustContain)
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             SQLiteConnection connection = new SQLiteConnection
                 ("Data Source=" + _chromeHistoryFile + ";Version=3;New=False;Compress=True;");
@@ -168,7 +167,6 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
             }
 
             return historyItems;
@@ -199,9 +197,9 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetChromeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
+        public IEnumerable<HistoryItem> GetChromeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             SQLiteConnection connection = new SQLiteConnection
                 ("Data Source=" + _chromeHistoryFile + ";Version=3;New=False;Compress=True;");
@@ -278,7 +276,6 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
             }
 
             return historyItems;
@@ -296,9 +293,9 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetEdgeHistoryItems()
+        public IEnumerable<HistoryItem> GetEdgeHistoryItems()
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             SQLiteConnection connection = new SQLiteConnection
                 ("Data Source=" + _edgeHistoryFile + ";Version=3;New=False;Compress=True;");
@@ -336,7 +333,7 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
+
             }
 
             return historyItems;
@@ -366,9 +363,9 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="mustContain">Determines whether the HistoryItem URL must contain one of the strings in the array</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetEdgeHistoryItems(string[] containOneOf, bool mustContain)
+        public IEnumerable<HistoryItem> GetEdgeHistoryItems(string[] containOneOf, bool mustContain)
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             SQLiteConnection connection = new SQLiteConnection
                 ("Data Source=" + _edgeHistoryFile + ";Version=3;New=False;Compress=True;");
@@ -431,7 +428,7 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
+
             }
 
             return historyItems;
@@ -462,9 +459,9 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetEdgeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
+        public IEnumerable<HistoryItem> GetEdgeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             SQLiteConnection connection = new SQLiteConnection
                 ("Data Source=" + _edgeHistoryFile + ";Version=3;New=False;Compress=True;");
@@ -541,7 +538,7 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
+
             }
 
             return historyItems;
@@ -559,9 +556,9 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetFirefoxHistoryItems()
+        public IEnumerable<HistoryItem> GetFirefoxHistoryItems()
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             string firefoxHistoryFile = FindFirefoxProfileFolderPath(_firefoxFolder) + "\\" + _firefoxHistoryFileName;
 
@@ -606,7 +603,7 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
+
             }
 
             return historyItems;
@@ -636,9 +633,9 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="mustContain">Determines whether the HistoryItem URL must contain one of the strings in the array</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetFirefoxHistoryItems(string[] containOneOf, bool mustContain)
+        public IEnumerable<HistoryItem> GetFirefoxHistoryItems(string[] containOneOf, bool mustContain)
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             string firefoxHistoryFile = FindFirefoxProfileFolderPath(_firefoxFolder) + "\\" + _firefoxHistoryFileName;
 
@@ -708,7 +705,7 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
+
             }
 
             return historyItems;
@@ -739,9 +736,9 @@ namespace BrowserHistoryParser_ClassLib
         /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
         /// <returns>List&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
-        public List<HistoryItem> GetFirefoxHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
+        public IEnumerable<HistoryItem> GetFirefoxHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
         {
-            List<HistoryItem> historyItems = new();
+            ICollection<HistoryItem> historyItems = new List<HistoryItem>();
 
             string firefoxHistoryFile = FindFirefoxProfileFolderPath(_firefoxFolder) + "\\" + _firefoxHistoryFileName;
 
@@ -825,7 +822,6 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-                allHistoryItems.Add(historyItem);
             }
 
             return historyItems;

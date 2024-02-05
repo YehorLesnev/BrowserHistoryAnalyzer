@@ -32,6 +32,8 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         {
             try
             {
+                HistoryItems = null;
+                
                 HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(_parser.GetAllHistoryItems());
             }
             catch (SQLiteException e)
