@@ -52,23 +52,25 @@
                     <Separator Margin="0 5 0 5"/>
 
                     <StackPanel Margin="5 0 5 0">
-                        <CheckBox Name="CheckboxMustContain">Load only URLs contain one of specified strings (comma-delimited list):</CheckBox>
+                        <TextBlock>Load only URLs contain one of specified strings (comma-delimited list):</TextBlock>
                         <Separator Visibility="Hidden" />
-                        <xctk:WatermarkTextBox 
-                            IsEnabled="False" 
+                        <xctk:WatermarkTextBox
+                            IsEnabled="True" 
                             Name="TextBoxMustContain" 
                             Watermark="Dog, Cat, flying bird, small goldfish" 
-                            Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" />
+                            Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
+                            Text="{Binding HistoryOptions.MustContain, Mode=TwoWay}"/>
                     </StackPanel>
                     <Separator Visibility="Hidden" Margin="0 5 0 5"/>
                     <StackPanel Margin="5 0 5 0">
-                        <CheckBox Name="CheckboxMustNotContain">Don't load URLs that contain one of specified strings (comma-delimited list):</CheckBox>
+                        <TextBlock>Don't load URLs that contain one of specified strings (comma-delimited list):</TextBlock>
                         <Separator Visibility="Hidden" />
                         <xctk:WatermarkTextBox 
-                            IsEnabled="False" 
-                            Name="TextBoxMustNotContain" 
+                            IsEnabled="True" 
+                            Name="TextBoxMustNotContain"
                             Watermark="Dog, Cat, flying bird, small goldfish"
-                            Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+                            Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
+                            Text="{Binding HistoryOptions.MustNotContain, Mode=TwoWay}"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

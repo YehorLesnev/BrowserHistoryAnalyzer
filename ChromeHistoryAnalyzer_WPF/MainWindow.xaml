@@ -9,6 +9,7 @@
     
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
+        <KeyBinding Key="F9" Command="{Binding Path=ShowOptionsWindow}"/>
         <!--<KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="SaveAll"/>
         <KeyBinding Key="S" Modifiers="Control" Command="SaveSelected"/>-->
     </Window.InputBindings>
@@ -26,7 +27,9 @@
                     <MenuItem Header="_Exit" />
                 </MenuItem>
                 <MenuItem Header="_View">
-                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>    
+                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>  
+                    <Separator/>
+                    <MenuItem Header="_Options" InputGestureText="F9" Command="{Binding Path=ShowOptionsWindow}"/>
                 </MenuItem>
             </Menu>
             <views:BrowserHistoryView />

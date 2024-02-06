@@ -28,6 +28,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         public BrowserHistoryViewModel()
         {
             GetAllHistoryWithOptions = new Command(getAllHistoryWithOptions);
+            ShowOptionsWindow = new Command(showOptionsWindow);
             //ShowErrorModal = new Command(showErrorModal);
         }
 
@@ -84,6 +85,18 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 showErrorModal(e.Message);
             }
         }
+
+        public ICommand ShowOptionsWindow { get; set; }
+        private void showOptionsWindow(object o)
+        {
+            var optionsWindow = new OptionsWindow()
+            {
+                DataContext = this,
+            };
+
+            optionsWindow.ShowDialog();
+        }
+
 
         //public ICommand ShowErrorModal { get; set; }
         private void showErrorModal(object o)
