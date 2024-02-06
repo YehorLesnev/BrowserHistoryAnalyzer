@@ -3,6 +3,7 @@ using System.Windows;
 using AutoMapper;
 using BrowserHistoryAnalyzer_WPF.Base.Mapping;
 using BrowserHistoryAnalyzer_WPF.ViewModels;
+using BrowserHistoryAnalyzer_WPF.Views.Modals;
 using BrowserHistoryParser_ClassLib;
 
 namespace BrowserHistoryAnalyzer_WPF
@@ -34,11 +35,9 @@ namespace BrowserHistoryAnalyzer_WPF
         {
             _mainwindow.Show();
 
-            //// FOR TESTING ONLY !
-            //Mapper _mapper = new Mapper(BrowserHistoryMappingConfig.GetConfig());
-            //var parser = new BrowserHistoryParser();
-            //_browserHistoryViewModel.HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(parser.GetEdgeHistoryItems(new string[]{}, new string[]{}));
-            ////
+            // FOR TESTING ONLY !
+           var opt = new Options();
+            opt.ShowDialog();
         }
     }
 }

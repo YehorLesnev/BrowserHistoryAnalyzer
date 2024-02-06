@@ -1,0 +1,64 @@
+﻿<Window x:Class="BrowserHistoryAnalyzer_WPF.Views.Modals.Options"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="Options" 
+        Height="278" Width="440" 
+        Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+        WindowStyle="ToolWindow" 
+        WindowStartupLocation="CenterScreen" Topmost="True">
+    <Grid>
+        <DockPanel LastChildFill="True">
+            <StackPanel DockPanel.Dock="Bottom" VerticalAlignment="Bottom" HorizontalAlignment="Right">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Name="ButtonOptionsOk" Margin="5" Grid.Column="0" IsDefault="True">Ok</Button>
+                    <Button Name="ButtonOptionsCancel" Margin="5" Grid.Column="1" Click="ButtonOptionsCancel_Click">Close</Button>
+                </Grid>
+            </StackPanel>
+
+            <StackPanel>
+                <StackPanel>
+                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Load History Options</TextBlock>
+
+                    <GroupBox Header="Browsers" Width="200" HorizontalAlignment="Center" BorderBrush="#FFD5DFE5" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
+                        <StackPanel HorizontalAlignment="Center" Margin="5">
+                            <CheckBox IsChecked="True" Name="CheckBoxChrome" HorizontalAlignment="Stretch">Google Chrome</CheckBox>
+                            <CheckBox IsChecked="True" Name="CheckBoxFirefox" HorizontalAlignment="Stretch">Mozilla Firefox</CheckBox>
+                            <CheckBox IsChecked="True" Name="CheckBoxEdge" HorizontalAlignment="Stretch">Microsoft Edge</CheckBox>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <Separator Margin="0 5 0 5"/>
+
+                    <StackPanel Margin="5 0 5 0">
+                        <CheckBox Name="CheckboxMustContain">Load only URLs contain one of specified strings (comma-delimited list):</CheckBox>
+                        <Separator Visibility="Hidden" />
+                        <xctk:WatermarkTextBox 
+                            IsEnabled="False" 
+                            Name="TextBoxMustContain" 
+                            Watermark="Dog, Cat, flying bird, small goldfish" 
+                            Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" />
+                    </StackPanel>
+                    <Separator Visibility="Hidden" Margin="0 5 0 5"/>
+                    <StackPanel Margin="5 0 5 0">
+                        <CheckBox Name="CheckboxMustNotContain">Don't load URLs that contain one of specified strings (comma-delimited list):</CheckBox>
+                        <Separator Visibility="Hidden" />
+                        <xctk:WatermarkTextBox 
+                            IsEnabled="False" 
+                            Name="TextBoxMustNotContain" 
+                            Watermark="Dog, Cat, flying bird, small goldfish"
+                            Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
+    </Grid>
+</Window>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:BrowserHistoryAnalyzer_WPF.Views"
         mc:Ignorable="d"
-        Title="Browser History Analyzer" Height="450" Width="950">
+        Title="Browser History Analyzer" Height="450" Width="950" WindowStartupLocation="CenterScreen">
     
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=GetAllHistory}"/>
