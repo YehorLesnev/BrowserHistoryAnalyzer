@@ -13,11 +13,42 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" 
+                    CommandParameter="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItems}" 
+                    Command="{Binding Path=SaveSelectedItemsToFile}"/> 
+        <KeyBinding Key="U" Modifiers="Control" 
+                    CommandParameter="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItems}" 
+                    Command="{Binding Path=CopySelectedUrls}"/>
+        <KeyBinding Key="F6"
+                    CommandParameter="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItem}" 
+                    Command="{Binding Path=OpenUrlInWebBrowser}"/>
+    </UserControl.InputBindings>
+
     <Grid>
         <DataGrid
                 x:Name="DataGridBrowserHistory"
                 ItemsSource="{Binding HistoryItems}"
-                AutoGenerateColumns="False">
+                AutoGenerateColumns="False"
+                >
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Copy Selected Items" InputGestureText="Ctrl+C" Command="Copy"/>
+                    <MenuItem Header="Save Selected Items" InputGestureText="Ctrl+S" 
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Command="{Binding Path=SaveSelectedItemsToFile}"/>
+                    <MenuItem Header="Copy URLs" InputGestureText="Ctrl+U"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Command="{Binding Path=CopySelectedUrls}"/>
+                    <MenuItem Header="Open URL in Web Browser" InputGestureText="F6"
+                              CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Command="{Binding Path=OpenUrlInWebBrowser}"/>
+                    <Separator/>
+                    <MenuItem Header="Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Id" Binding="{Binding Id}"/>
                 <DataGridTemplateColumn IsReadOnly="True" Header="Icon">
@@ -32,7 +63,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn SortMemberPath="Url.AbsoluteUri" Width="300" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
+                <DataGridTextColumn SortMemberPath="Url.AbsoluteUri" Width="350" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
                 <DataGridTextColumn Width="200" IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding VisitedTime}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Browser" Binding="{Binding BrowserName}"/>

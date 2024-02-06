@@ -11,5 +11,10 @@ namespace BrowserHistoryAnalyzer_WPF
         {
             InitializeComponent();
         }
+
+        private void MenuItemExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

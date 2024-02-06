@@ -10,8 +10,7 @@
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
         <KeyBinding Key="F9" Command="{Binding Path=ShowOptionsWindow}"/>
-        <!--<KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="SaveAll"/>
-        <KeyBinding Key="S" Modifiers="Control" Command="SaveSelected"/>-->
+        <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding Path=SaveAll}"/>
     </Window.InputBindings>
     
     <Grid>
@@ -19,12 +18,8 @@
             <Menu DockPanel.Dock="Top" FontSize="12">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Save All" InputGestureText="Ctrl+Shift+S"/>
-                    <MenuItem Header="_Save Selected Items" InputGestureText="Ctrl+S"/>
                     <Separator/>
-                    <MenuItem Header="_Open URL in Web Browser" />
-                    <MenuItem Header="_Properties" />
-                    <Separator/>
-                    <MenuItem Header="_Exit" />
+                    <MenuItem Header="_Exit" Click="MenuItemExit_Click"/>
                 </MenuItem>
                 <MenuItem Header="_View">
                     <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>  

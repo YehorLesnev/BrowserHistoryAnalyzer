@@ -25,7 +25,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 OnPropertyChanged();
             }
         }
-       
+
         private string? _title;
         public string? Title
         {
@@ -79,6 +79,19 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 _browserName = value;
                 OnPropertyChanged();
             }
+        }
+
+        public override string ToString()
+        {
+            return $"====================================================================\n" +
+                $"ID: {Id}\n" +
+                $"URL: {Url}\n" +
+                $"Title: {Title}\n" +
+                $"Visited time: {VisitedTime}\n" +
+                $"Visit count: {VisitCount}\n" +
+                $"Typed count: {TypedCount}\n" +
+                $"Browser: {BrowserName}\n"
+                + $"====================================================================";
         }
     }
 }

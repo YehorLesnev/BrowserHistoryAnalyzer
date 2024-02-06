@@ -3,9 +3,12 @@ using BrowserHistoryAnalyzer_WPF.Views.Modals;
 using BrowserHistoryParser_ClassLib;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using BrowserHistoryAnalyzer_WPF.Models;
+using Microsoft.Win32;
+using System.Windows;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
@@ -13,6 +16,17 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
     {
         private readonly BrowserHistoryParser _parser = new();
         public Options HistoryOptions { get; set; } = new();
+
+        private ObservableCollection<string>? _selectedItems;
+        public ObservableCollection<string>? SelectedItems
+        {
+            get => _selectedItems;
+            set
+            {
+                _selectedItems = value;
+                OnPropertyChanged();
+            }
+        }
 
         private ObservableCollection<HistoryItemViewModel>? _historyItems;
         public ObservableCollection<HistoryItemViewModel>? HistoryItems
@@ -29,6 +43,10 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         {
             GetAllHistoryWithOptions = new Command(getAllHistoryWithOptions);
             ShowOptionsWindow = new Command(showOptionsWindow);
+            SaveSelectedItemsToFile = new Command(saveSelectedItemsToFile);
+            CopySelectedUrls = new Command(copySelectedUrls);
+            OpenUrlInWebBrowser = new Command(openUrlInWebBrowser);
+            SaveAll = new Command(saveAll);
             //ShowErrorModal = new Command(showErrorModal);
         }
 
@@ -97,6 +115,109 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             optionsWindow.ShowDialog();
         }
 
+        public ICommand SaveSelectedItemsToFile { get; set; }
+        private void saveSelectedItemsToFile(object o)
+        {
+            IList selectedItems = (IList)o;
+
+            if (selectedItems is not null && selectedItems.Count > 0)
+            {
+                string text = "";
+
+                foreach (var item in selectedItems)
+                {
+                    text += $"{item}\n";
+                }
+
+                try
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Text file (*.txt)|*.txt";
+                    saveFileDialog.Title = "Save as...";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, text);
+                    }
+                }
+                catch (Exception e)
+                {
+                    showErrorModal(e.Message);
+                }
+            }
+        }
+
+        public ICommand CopySelectedUrls { get; set; }
+        private void copySelectedUrls(object o)
+        {
+            List<HistoryItemViewModel> selectedItems = null;
+
+            try
+            {
+                selectedItems = (o as IList ?? throw new InvalidOperationException()).Cast<HistoryItemViewModel>().ToList();
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+
+            if (selectedItems is not null && selectedItems.Count > 0)
+            {
+                string text = "";
+
+                foreach (var item in selectedItems)
+                {
+                    text += $"{item.Url}\n";
+                }
+
+                Clipboard.SetText(text);
+            }
+        }
+
+        public ICommand OpenUrlInWebBrowser { get; set; }
+        private void openUrlInWebBrowser(object o)
+        {
+            var historyItem = (HistoryItemViewModel)o;
+
+            if (historyItem?.Url is not null)
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = historyItem.Url.AbsoluteUri,
+                    UseShellExecute = true
+                });
+            }
+        }
+
+        public ICommand SaveAll { get; set; }
+        private void saveAll(object o)
+        {
+            if (HistoryItems is not null && HistoryItems.Count > 0)
+            {
+                string text = "";
+
+                foreach (var item in HistoryItems)
+                {
+                    text += $"{item}\n";
+                }
+
+                try
+                {
+                    SaveFileDialog saveFileDialog = new SaveFileDialog();
+                    saveFileDialog.Filter = "Text file (*.txt)|*.txt";
+                    saveFileDialog.Title = "Save as...";
+
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        File.WriteAllText(saveFileDialog.FileName, text);
+                    }
+                }
+                catch (Exception e)
+                {
+                    showErrorModal(e.Message);
+                }
+            }
+        }
 
         //public ICommand ShowErrorModal { get; set; }
         private void showErrorModal(object o)
