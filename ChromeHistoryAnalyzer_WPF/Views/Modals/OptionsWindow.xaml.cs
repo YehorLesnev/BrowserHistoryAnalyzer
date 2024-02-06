@@ -3,11 +3,11 @@
 namespace BrowserHistoryAnalyzer_WPF.Views.Modals
 {
     /// <summary>
-    /// Interaction logic for Options.xaml
+    /// Interaction logic for OptionsWindow.xaml
     /// </summary>
-    public partial class Options : Window
+    public partial class OptionsWindow : Window
     {
-        public Options()
+        public OptionsWindow()
         {
             InitializeComponent();
         }

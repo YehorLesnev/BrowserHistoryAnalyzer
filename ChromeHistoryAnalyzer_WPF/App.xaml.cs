@@ -1,10 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows;
-using AutoMapper;
-using BrowserHistoryAnalyzer_WPF.Base.Mapping;
+﻿using System.Windows;
 using BrowserHistoryAnalyzer_WPF.ViewModels;
 using BrowserHistoryAnalyzer_WPF.Views.Modals;
-using BrowserHistoryParser_ClassLib;
 
 namespace BrowserHistoryAnalyzer_WPF
 {
@@ -36,7 +32,7 @@ namespace BrowserHistoryAnalyzer_WPF
             _mainwindow.Show();
 
             // FOR TESTING ONLY !
-           var opt = new Options();
+           var opt = new OptionsWindow();
             opt.ShowDialog();
         }
     }

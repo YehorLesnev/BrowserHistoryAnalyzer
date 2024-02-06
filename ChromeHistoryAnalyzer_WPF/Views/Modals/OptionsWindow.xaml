@@ -1,4 +1,4 @@
-﻿<Window x:Class="BrowserHistoryAnalyzer_WPF.Views.Modals.Options"
+﻿<Window x:Class="BrowserHistoryAnalyzer_WPF.Views.Modals.OptionsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -26,7 +26,7 @@
 
             <StackPanel>
                 <StackPanel>
-                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Load History Options</TextBlock>
+                    <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Load History OptionsWindow</TextBlock>
 
                     <GroupBox Header="Browsers" Width="200" HorizontalAlignment="Center" BorderBrush="#FFD5DFE5" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                         <StackPanel HorizontalAlignment="Center" Margin="5">
