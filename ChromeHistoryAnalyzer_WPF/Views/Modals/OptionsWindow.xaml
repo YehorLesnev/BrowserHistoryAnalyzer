@@ -19,8 +19,21 @@
                         <ColumnDefinition Width="100"/>
                     </Grid.ColumnDefinitions>
 
-                    <Button Name="ButtonOptionsOk" Margin="5" Grid.Column="0" IsDefault="True">Ok</Button>
-                    <Button Name="ButtonOptionsCancel" Margin="5" Grid.Column="1" Click="ButtonOptionsCancel_Click">Close</Button>
+                    <Button Name="ButtonOptionsOk" 
+                            Margin="5" 
+                            Grid.Column="0" 
+                            IsDefault="True" 
+                            Command="{Binding Path=GetAllHistoryWithOptions}"
+                            Click="ButtonOptionsClose">
+                        Ok
+                    </Button>
+                    
+                    <Button Name="ButtonOptionsCancel" 
+                            Margin="5" 
+                            Grid.Column="1" 
+                            Click="ButtonOptionsClose">
+                        Close
+                    </Button>
                 </Grid>
             </StackPanel>
 
@@ -30,9 +43,9 @@
 
                     <GroupBox Header="Browsers" Width="200" HorizontalAlignment="Center" BorderBrush="#FFD5DFE5" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                         <StackPanel HorizontalAlignment="Center" Margin="5">
-                            <CheckBox IsChecked="True" Name="CheckBoxChrome" HorizontalAlignment="Stretch">Google Chrome</CheckBox>
-                            <CheckBox IsChecked="True" Name="CheckBoxFirefox" HorizontalAlignment="Stretch">Mozilla Firefox</CheckBox>
-                            <CheckBox IsChecked="True" Name="CheckBoxEdge" HorizontalAlignment="Stretch">Microsoft Edge</CheckBox>
+                            <CheckBox IsChecked="{Binding HistoryOptions.IsChromeChecked, Mode=TwoWay}" Name="CheckBoxChrome" HorizontalAlignment="Stretch">Google Chrome</CheckBox>
+                            <CheckBox IsChecked="{Binding HistoryOptions.IsFirefoxChecked, Mode=TwoWay}" Name="CheckBoxFirefox" HorizontalAlignment="Stretch">Mozilla Firefox</CheckBox>
+                            <CheckBox IsChecked="{Binding HistoryOptions.IsEdgeChecked, Mode=TwoWay}" Name="CheckBoxEdge" HorizontalAlignment="Stretch">Microsoft Edge</CheckBox>
                         </StackPanel>
                     </GroupBox>
 

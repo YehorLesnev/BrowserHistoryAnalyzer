@@ -8,7 +8,7 @@
         Title="Browser History Analyzer" Height="450" Width="950" WindowStartupLocation="CenterScreen">
     
     <Window.InputBindings>
-        <KeyBinding Key="F5" Command="{Binding Path=GetAllHistory}"/>
+        <KeyBinding Key="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
         <!--<KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="SaveAll"/>
         <KeyBinding Key="S" Modifiers="Control" Command="SaveSelected"/>-->
     </Window.InputBindings>
@@ -26,7 +26,7 @@
                     <MenuItem Header="_Exit" />
                 </MenuItem>
                 <MenuItem Header="_View">
-                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistory}"/>    
+                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>    
                 </MenuItem>
             </Menu>
             <views:BrowserHistoryView />

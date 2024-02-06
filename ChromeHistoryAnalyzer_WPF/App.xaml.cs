@@ -32,7 +32,10 @@ namespace BrowserHistoryAnalyzer_WPF
             _mainwindow.Show();
 
             // FOR TESTING ONLY !
-           var opt = new OptionsWindow();
+           var opt = new OptionsWindow()
+           {
+               DataContext = _browserHistoryViewModel
+           };
             opt.ShowDialog();
         }
     }

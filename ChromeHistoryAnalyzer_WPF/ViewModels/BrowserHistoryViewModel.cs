@@ -1,14 +1,18 @@
-﻿using BrowserHistoryAnalyzer_WPF.Views.Modals;
+﻿using System.Collections;
+using BrowserHistoryAnalyzer_WPF.Views.Modals;
 using BrowserHistoryParser_ClassLib;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
+using BrowserHistoryAnalyzer_WPF.Models;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
     public class BrowserHistoryViewModel : ViewModelBase
     {
         private readonly BrowserHistoryParser _parser = new();
+        public Options HistoryOptions { get; set; } = new();
 
         private ObservableCollection<HistoryItemViewModel>? _historyItems;
         public ObservableCollection<HistoryItemViewModel>? HistoryItems
@@ -23,18 +27,53 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
 
         public BrowserHistoryViewModel()
         {
-            GetAllHistory = new Command(getAllHistory);
+            GetAllHistoryWithOptions = new Command(getAllHistoryWithOptions);
             //ShowErrorModal = new Command(showErrorModal);
         }
 
-        public ICommand GetAllHistory { get; set; }
-        private void getAllHistory(object o)
+        public ICommand GetAllHistoryWithOptions { get; set; }
+        private void getAllHistoryWithOptions(object o)
         {
             try
             {
                 HistoryItems = null;
-                
-                HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(_parser.GetAllHistoryItems());
+
+                string[] mustContain = [];
+                string[] dontContain = [];
+
+                if (HistoryOptions.MustContain is not null && HistoryOptions.MustContain.Length > 0)
+                {
+                    Regex regex = new Regex(",\\s*");
+                    var wordsList = new List<string>(regex.Split(HistoryOptions.MustContain));
+                    wordsList.RemoveAll(string.IsNullOrEmpty);
+                    mustContain = wordsList.ToArray();
+                }
+                if (HistoryOptions.MustNotContain is not null && HistoryOptions.MustNotContain.Length > 0)
+                {
+                    Regex regex = new Regex(",\\s*");
+                    var wordsList = new List<string>(regex.Split(HistoryOptions.MustNotContain));
+                    wordsList.RemoveAll(string.IsNullOrEmpty);
+                    dontContain = wordsList.ToArray();
+                }
+
+                List<HistoryItem> history = new List<HistoryItem>();
+
+                if (HistoryOptions.IsChromeChecked)
+                {
+                    history.AddRange(_parser.GetChromeHistoryItems(mustContain, dontContain));
+                }
+
+                if (HistoryOptions.IsEdgeChecked)
+                {
+                    history.AddRange(_parser.GetEdgeHistoryItems(mustContain, dontContain));
+                }
+
+                if (HistoryOptions.IsFirefoxChecked)
+                {
+                    history.AddRange(_parser.GetFirefoxHistoryItems(mustContain, dontContain));
+                }
+
+                HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(history);
             }
             catch (SQLiteException e)
             {

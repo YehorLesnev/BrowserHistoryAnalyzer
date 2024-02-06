@@ -12,9 +12,12 @@ namespace BrowserHistoryAnalyzer_WPF.Views.Modals
             InitializeComponent();
         }
 
-        private void ButtonOptionsCancel_Click(object sender, RoutedEventArgs e)
+        private void ButtonOptionsClose(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+        private void ButtonOptionsCancel_Click(object sender, RoutedEventArgs e)
+        {
         }
     }
 }
