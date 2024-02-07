@@ -16,10 +16,21 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
     public class BrowserHistoryViewModel : ViewModelBase
     {
-        private readonly BrowserHistoryParser _parser = new();
+        public readonly BrowserHistoryParser _parser = new();
         public Options HistoryOptions { get; set; } = new();
         public int CurrentTabIndex { get; set; }
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
+        
         private ObservableCollection<HistoryItemViewModel>? _historyItems;
         public ObservableCollection<HistoryItemViewModel>? HistoryItems
         {
@@ -44,7 +55,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
 
         public BrowserHistoryViewModel()
         {
-            GetAllHistoryWithOptions = new Command(getAllHistoryWithOptions);
+            GetAllHistoryWithOptions = new CommandLoadHistoryAsync(this);
             ShowOptionsWindow = new Command(showOptionsWindow);
             SaveSelectedItemsToFile = new Command(saveSelectedItemsToFile);
             CopySelectedUrls = new Command(copySelectedUrls);
@@ -53,74 +64,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             //ShowErrorModal = new Command(showErrorModal);
         }
 
-        public ICommand GetAllHistoryWithOptions { get; set; }
-        private void getAllHistoryWithOptions(object o)
-        {
-            try
-            {
-                HistoryItems = null;
-                Websites = null;
-
-                string[] mustContain = [];
-                string[] dontContain = [];
-
-                if (HistoryOptions.MustContain is not null && HistoryOptions.MustContain.Length > 0)
-                {
-                    Regex regex = new Regex(",\\s*");
-                    var wordsList = new List<string>(regex.Split(HistoryOptions.MustContain));
-                    wordsList.RemoveAll(string.IsNullOrEmpty);
-                    mustContain = wordsList.ToArray();
-                }
-                if (HistoryOptions.MustNotContain is not null && HistoryOptions.MustNotContain.Length > 0)
-                {
-                    Regex regex = new Regex(",\\s*");
-                    var wordsList = new List<string>(regex.Split(HistoryOptions.MustNotContain));
-                    wordsList.RemoveAll(string.IsNullOrEmpty);
-                    dontContain = wordsList.ToArray();
-                }
-
-                List<HistoryItem> history = new List<HistoryItem>();
-
-                if (HistoryOptions.IsChromeChecked)
-                {
-                    history.AddRange(_parser.GetChromeHistoryItems(mustContain, dontContain));
-                }
-
-                if (HistoryOptions.IsEdgeChecked)
-                {
-                    history.AddRange(_parser.GetEdgeHistoryItems(mustContain, dontContain));
-                }
-
-                if (HistoryOptions.IsFirefoxChecked)
-                {
-                    history.AddRange(_parser.GetFirefoxHistoryItems(mustContain, dontContain));
-                }
-
-                HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(history);
-
-                // Fill Websites
-                var websites = history.GroupBy(
-                    h => h.URL.Host,
-                    (key, g) => new Website
-                    {
-                        Url = key == "" ? "file" : key,
-                        VisitCount = g.Sum(x => x.VisitCount),
-                        TypedCount = g.Sum(x => x.TypedCount),
-                        FirstVisitedTime = g.Min(x => x.VisitedTime),
-                        LastVisitedTime = g.Max(x => x.VisitedTime),
-                    });
-
-                Websites = _mapper.Map<ObservableCollection<WebsiteViewModel>>(websites);
-            }
-            catch (SQLiteException e)
-            {
-                showErrorModal("\"" + e.Message + "\" Try to close all browsers and their processes");
-            }
-            catch (Exception e)
-            {
-                showErrorModal(e.Message);
-            }
-        }
+        public ICommandAsync GetAllHistoryWithOptions { get; set; }
 
         public ICommand ShowOptionsWindow { get; set; }
         private void showOptionsWindow(object o)
@@ -297,7 +241,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         }
 
         //public ICommand ShowErrorModal { get; set; }
-        private void showErrorModal(object o)
+        public void showErrorModal(object o)
         {
             var errWindow = new ErrorMessageWindow
             {

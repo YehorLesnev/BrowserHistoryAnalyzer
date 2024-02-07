@@ -7,7 +7,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
     public class ViewModelBase : INotifyPropertyChanged
     {
-        protected Mapper _mapper = new Mapper(BrowserHistoryMappingConfig.GetConfig());
+        public readonly Mapper _mapper = new Mapper(BrowserHistoryMappingConfig.GetConfig());
 
         public event PropertyChangedEventHandler? PropertyChanged;
 

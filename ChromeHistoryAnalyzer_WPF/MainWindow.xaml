@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:BrowserHistoryAnalyzer_WPF.Views"
+        xmlns:li="http://github.com/zeluisping/loadingIndicators/xaml/controls"
         mc:Ignorable="d"
         Title="Browser History Analyzer" Height="450" Width="950" WindowStartupLocation="CenterScreen">
 
@@ -37,5 +38,29 @@
                 </TabItem>
             </TabControl>
         </DockPanel>
+
+        <StackPanel VerticalAlignment="Center">
+            <StackPanel.Style>
+                <Style TargetType="StackPanel">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsLoading}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </StackPanel.Style>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+            </Grid>
+            <li:LoadingIndicator Grid.Column="0" IsActive="{Binding IsLoading}" Visibility="Visible" Mode="Arcs"/>
+            <TextBlock Grid.Column="1" HorizontalAlignment="Center">Loading Browser History...</TextBlock>
+        </StackPanel>
     </Grid>
 </Window>
