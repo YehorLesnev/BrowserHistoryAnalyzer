@@ -16,7 +16,7 @@
     <UserControl.InputBindings>
         <KeyBinding Key="S" Modifiers="Control" 
                     CommandParameter="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItems}" 
-                    Command="{Binding Path=SaveSelectedItemsToFile}"/> 
+                    Command="{Binding Path=SaveSelectedItemsToFile}"/>
         <KeyBinding Key="U" Modifiers="Control" 
                     CommandParameter="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItems}" 
                     Command="{Binding Path=CopySelectedUrls}"/>
@@ -26,50 +26,63 @@
     </UserControl.InputBindings>
 
     <Grid>
-        <DataGrid
+        <DockPanel Grid.Row="0">
+            
+            <StackPanel DockPanel.Dock="Bottom" 
+                        Height="25" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <TextBlock FontSize="13" 
+                           Margin="5 0 0 0">
+                    <Run Text="{Binding HistoryItems.Count, Mode=OneWay}"/>
+                    <Run Text=" item(s) loaded; "/>
+                    <Run Text="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItems.Count, Mode=OneWay}"/>
+                    <Run Text=" Selected"/>
+                </TextBlock>
+            </StackPanel>
+            <DataGrid
                 x:Name="DataGridBrowserHistory"
                 ItemsSource="{Binding HistoryItems}"
                 AutoGenerateColumns="False"
                 >
-
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Copy Selected Items" InputGestureText="Ctrl+C" Command="Copy"/>
-                    <MenuItem Header="Save Selected Items" InputGestureText="Ctrl+S" 
+                             
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy Selected Items" InputGestureText="Ctrl+C" Command="Copy"/>
+                        <MenuItem Header="Save Selected Items" InputGestureText="Ctrl+S" 
                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
                               Command="{Binding Path=SaveSelectedItemsToFile}"/>
-                    <MenuItem Header="Copy URLs" InputGestureText="Ctrl+U"
+                        <MenuItem Header="Copy URLs" InputGestureText="Ctrl+U"
                               CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
                               Command="{Binding Path=CopySelectedUrls}"/>
-                    <MenuItem Header="Open URL in Web Browser" InputGestureText="F6"
+                        <MenuItem Header="Open URL in Web Browser" InputGestureText="F6"
                               CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
                               Command="{Binding Path=OpenUrlInWebBrowser}"/>
-                    <Separator/>
-                    <MenuItem Header="Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
+                        <Separator/>
+                        <MenuItem Header="Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
 
-            <DataGrid.Columns>
-                <DataGridTextColumn IsReadOnly="True" Header="Id" Binding="{Binding Id}"/>
-                <DataGridTemplateColumn IsReadOnly="True" Header="Icon">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image
+                <DataGrid.Columns>
+                    <DataGridTextColumn IsReadOnly="True" Header="Id" Binding="{Binding Id}"/>
+                    <DataGridTemplateColumn IsReadOnly="True" Header="Icon">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image
                                 Width="24"
                                 Height="24"
                                 Source="{Binding BrowserName, 
                                         Converter={StaticResource my:BrowserIconPathConverter},
                                         ConverterParameter=BrowserIcons}"/>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTextColumn SortMemberPath="Url.AbsoluteUri" Width="350" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
-                <DataGridTextColumn Width="200" IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
-                <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding VisitedTime}"/>
-                <DataGridTextColumn IsReadOnly="True" Header="Browser" Binding="{Binding BrowserName}"/>
-                <DataGridTextColumn IsReadOnly="True" Header="Visit Count" Binding="{Binding VisitCount}"/>
-                <DataGridTextColumn IsReadOnly="True" Header="Typed Count" Binding="{Binding TypedCount}"/>
-            </DataGrid.Columns>
-        </DataGrid>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn SortMemberPath="Url.AbsoluteUri" Width="350" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
+                    <DataGridTextColumn Width="200" IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding VisitedTime}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Browser" Binding="{Binding BrowserName}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Visit Count" Binding="{Binding VisitCount}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Typed Count" Binding="{Binding TypedCount}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
     </Grid>
 </UserControl>

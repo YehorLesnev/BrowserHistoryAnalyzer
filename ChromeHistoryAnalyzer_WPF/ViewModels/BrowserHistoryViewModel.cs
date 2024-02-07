@@ -17,16 +17,6 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         private readonly BrowserHistoryParser _parser = new();
         public Options HistoryOptions { get; set; } = new();
 
-        private ObservableCollection<string>? _selectedItems;
-        public ObservableCollection<string>? SelectedItems
-        {
-            get => _selectedItems;
-            set
-            {
-                _selectedItems = value;
-                OnPropertyChanged();
-            }
-        }
 
         private ObservableCollection<HistoryItemViewModel>? _historyItems;
         public ObservableCollection<HistoryItemViewModel>? HistoryItems
