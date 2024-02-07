@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="BrowserHistoryAnalyzer_WPF.Views.WebsitesHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.InputBindings>
+        <KeyBinding Key="S" Modifiers="Control" 
+                 CommandParameter="{Binding Source={x:Reference DataGridWebsitesHistory}, Path=SelectedItems}" 
+                 Command="{Binding Path=SaveSelectedItemsToFile}"/>
+        <KeyBinding Key="U" Modifiers="Control" 
+                 CommandParameter="{Binding Source={x:Reference DataGridWebsitesHistory}, Path=SelectedItems}" 
+                 Command="{Binding Path=CopySelectedUrls}"/>
+        <KeyBinding Key="F6"
+                 CommandParameter="{Binding Source={x:Reference DataGridWebsitesHistory}, Path=SelectedItem}" 
+                 Command="{Binding Path=OpenUrlInWebBrowser}"/>
+    </UserControl.InputBindings>
+
+    <Grid>
+        <DockPanel Grid.Row="0">
+            <StackPanel DockPanel.Dock="Bottom"
+                     Height="25" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
+                <TextBlock FontSize="13" 
+                        Margin="5 0 0 0">
+                 <Run Text="{Binding Websites.Count, Mode=OneWay}"/>
+                 <Run Text=" item(s) loaded; "/>
+                 <Run Text="{Binding Source={x:Reference DataGridWebsitesHistory}, Path=SelectedItems.Count, Mode=OneWay}"/>
+                 <Run Text=" Selected"/>
+                </TextBlock>
+            </StackPanel>
+            <DataGrid
+             x:Name="DataGridWebsitesHistory"
+             ItemsSource="{Binding Websites}"
+             AutoGenerateColumns="False"
+             >
+
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Copy Selected Items" InputGestureText="Ctrl+C" Command="Copy"/>
+                        <MenuItem Header="Save Selected Items" InputGestureText="Ctrl+S" 
+                           CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                           Command="{Binding Path=SaveSelectedItemsToFile}"/>
+                        <MenuItem Header="Copy URLs" InputGestureText="Ctrl+U"
+                           CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                           Command="{Binding Path=CopySelectedUrls}"/>
+                        <MenuItem Header="Open URL in Web Browser" InputGestureText="F6"
+                           CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                           Command="{Binding Path=OpenUrlInWebBrowser}"/>
+                        <Separator/>
+                        <MenuItem Header="Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="350" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="First Visited Time" Binding="{Binding FirstVisitedTime}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding LastVisitedTime}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Visit Count" Binding="{Binding VisitCount}"/>
+                    <DataGridTextColumn IsReadOnly="True" Header="Typed Count" Binding="{Binding TypedCount}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </DockPanel>
+    </Grid>
+</UserControl>

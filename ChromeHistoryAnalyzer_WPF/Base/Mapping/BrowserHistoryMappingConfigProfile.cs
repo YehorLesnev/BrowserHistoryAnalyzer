@@ -14,6 +14,9 @@ namespace BrowserHistoryAnalyzer_WPF.Base.Mapping
 
             CreateMap<HistoryItem, HistoryItemViewModel>();
             CreateMap<HistoryItemViewModel, HistoryItem>();
+
+            CreateMap<Website, WebsiteViewModel>();
+            CreateMap<WebsiteViewModel, Website>();
         }
     }
 }

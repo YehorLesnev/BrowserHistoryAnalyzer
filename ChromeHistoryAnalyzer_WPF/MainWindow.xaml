@@ -6,28 +6,36 @@
         xmlns:views="clr-namespace:BrowserHistoryAnalyzer_WPF.Views"
         mc:Ignorable="d"
         Title="Browser History Analyzer" Height="450" Width="950" WindowStartupLocation="CenterScreen">
-    
+
     <Window.InputBindings>
         <KeyBinding Key="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
         <KeyBinding Key="F9" Command="{Binding Path=ShowOptionsWindow}"/>
         <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding Path=SaveAll}"/>
     </Window.InputBindings>
-    
+
     <Grid>
         <DockPanel Grid.Row="0">
             <Menu DockPanel.Dock="Top" FontSize="12">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_Save All" InputGestureText="Ctrl+Shift+S"/>
+                    <MenuItem Header="_Save All" InputGestureText="Ctrl+Shift+S" Command="{Binding Path=SaveAll}"/>
                     <Separator/>
                     <MenuItem Header="_Exit" Click="MenuItemExit_Click"/>
                 </MenuItem>
                 <MenuItem Header="_View">
-                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>  
+                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
                     <Separator/>
                     <MenuItem Header="_Options" InputGestureText="F9" Command="{Binding Path=ShowOptionsWindow}"/>
                 </MenuItem>
             </Menu>
-            <views:BrowserHistoryView />
+
+            <TabControl SelectedIndex="{Binding CurrentTabIndex}">
+                <TabItem Header="History">
+                    <views:BrowserHistoryView />
+                </TabItem>
+                <TabItem Header="Websites">
+                    <views:WebsitesHistoryView />
+                </TabItem>
+            </TabControl>
         </DockPanel>
     </Grid>
 </Window>

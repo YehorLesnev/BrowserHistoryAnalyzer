@@ -9,6 +9,7 @@ using System.Windows.Input;
 using BrowserHistoryAnalyzer_WPF.Models;
 using Microsoft.Win32;
 using System.Windows;
+using BrowserHistoryAnalyzer_WPF.Enums;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
@@ -16,7 +17,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
     {
         private readonly BrowserHistoryParser _parser = new();
         public Options HistoryOptions { get; set; } = new();
-
+        public int CurrentTabIndex { get; set; }
 
         private ObservableCollection<HistoryItemViewModel>? _historyItems;
         public ObservableCollection<HistoryItemViewModel>? HistoryItems
@@ -25,6 +26,17 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             set
             {
                 _historyItems = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<WebsiteViewModel>? _websites;
+        public ObservableCollection<WebsiteViewModel>? Websites
+        {
+            get => _websites;
+            set
+            {
+                _websites = value;
                 OnPropertyChanged();
             }
         }
@@ -46,6 +58,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             try
             {
                 HistoryItems = null;
+                Websites = null;
 
                 string[] mustContain = [];
                 string[] dontContain = [];
@@ -83,6 +96,20 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 }
 
                 HistoryItems = _mapper.Map<ObservableCollection<HistoryItemViewModel>>(history);
+
+                // Fill Websites
+                var websites = history.GroupBy(
+                    h => h.URL.Host,
+                    (key, g) => new Website
+                    {
+                        Url = key == "" ? "file" : key,
+                        VisitCount = g.Sum(x => x.VisitCount),
+                        TypedCount = g.Sum(x => x.TypedCount),
+                        FirstVisitedTime = g.Min(x => x.VisitedTime),
+                        LastVisitedTime = g.Max(x => x.VisitedTime),
+                    });
+
+                Websites = _mapper.Map<ObservableCollection<WebsiteViewModel>>(websites);
             }
             catch (SQLiteException e)
             {
@@ -140,72 +167,131 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         public ICommand CopySelectedUrls { get; set; }
         private void copySelectedUrls(object o)
         {
-            List<HistoryItemViewModel> selectedItems = null;
-
-            try
+            if ((int)MainTabIndex.BrowserHistory == CurrentTabIndex)
             {
-                selectedItems = (o as IList ?? throw new InvalidOperationException()).Cast<HistoryItemViewModel>().ToList();
-            }
-            catch (Exception e)
-            {
-                return;
-            }
+                List<HistoryItemViewModel> selectedItems = null;
 
-            if (selectedItems is not null && selectedItems.Count > 0)
-            {
-                string text = "";
-
-                foreach (var item in selectedItems)
+                try
                 {
-                    text += $"{item.Url}\n";
+                    selectedItems = (o as IList ?? throw new InvalidOperationException()).Cast<HistoryItemViewModel>().ToList();
+                }
+                catch (Exception e)
+                {
+                    return;
                 }
 
-                Clipboard.SetText(text);
+                if (selectedItems is not null && selectedItems.Count > 0)
+                {
+                    string text = "";
+
+                    foreach (var item in selectedItems)
+                    {
+                        text += $"{item.Url}\n";
+                    }
+
+                    Clipboard.SetText(text);
+                }
+            }
+            else if ((int)MainTabIndex.WebsitesHistory == CurrentTabIndex)
+            {
+                List<WebsiteViewModel> selectedItems = null;
+
+                try
+                {
+                    selectedItems = (o as IList ?? throw new InvalidOperationException()).Cast<WebsiteViewModel>().ToList();
+                }
+                catch (Exception e)
+                {
+                    return;
+                }
+
+                if (selectedItems is not null && selectedItems.Count > 0)
+                {
+                    string text = "";
+
+                    foreach (var item in selectedItems)
+                    {
+                        text += $"{item.Url}\n";
+                    }
+
+                    Clipboard.SetText(text);
+                }
             }
         }
 
         public ICommand OpenUrlInWebBrowser { get; set; }
         private void openUrlInWebBrowser(object o)
         {
-            var historyItem = (HistoryItemViewModel)o;
-
-            if (historyItem?.Url is not null)
+            if ((int)MainTabIndex.BrowserHistory == CurrentTabIndex)
             {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                var historyItem = (HistoryItemViewModel)o;
+
+                if (historyItem?.Url is not null)
                 {
-                    FileName = historyItem.Url.AbsoluteUri,
-                    UseShellExecute = true
-                });
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = historyItem.Url.AbsoluteUri,
+                        UseShellExecute = true
+                    });
+                }
+            }
+            else if ((int)MainTabIndex.WebsitesHistory == CurrentTabIndex)
+            {
+                var website = (WebsiteViewModel)o;
+
+                if (website?.Url is not null)
+                {
+                    try
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = website.Url,
+                            UseShellExecute = true
+                        });
+                    }
+                    catch (Exception e)
+                    {
+                        showErrorModal(e.Message); return;
+                    }
+                }
             }
         }
 
         public ICommand SaveAll { get; set; }
         private void saveAll(object o)
         {
-            if (HistoryItems is not null && HistoryItems.Count > 0)
+            string text = "";
+
+            if ((int)MainTabIndex.BrowserHistory == CurrentTabIndex && HistoryItems is not null && HistoryItems.Count > 0)
             {
-                string text = "";
 
                 foreach (var item in HistoryItems)
                 {
                     text += $"{item}\n";
                 }
-
-                try
+            }
+            else if ((int)MainTabIndex.WebsitesHistory == CurrentTabIndex && Websites is not null && Websites.Count > 0)
+            {
+                foreach (var item in Websites)
                 {
-                    SaveFileDialog saveFileDialog = new SaveFileDialog();
-                    saveFileDialog.Filter = "Text file (*.txt)|*.txt";
-                    saveFileDialog.Title = "Save as...";
+                    text += $"{item}\n";
+                }
+            }
 
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        File.WriteAllText(saveFileDialog.FileName, text);
-                    }
-                }
-                catch (Exception e)
+            try
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "Text file (*.txt)|*.txt";
+                saveFileDialog.Title = "Save as...";
+
+                if (saveFileDialog.ShowDialog() == true)
                 {
-                    showErrorModal(e.Message);
+                    File.WriteAllText(saveFileDialog.FileName, text);
                 }
+            }
+            catch (Exception e)
+            {
+                showErrorModal(e.Message);
             }
         }
 
