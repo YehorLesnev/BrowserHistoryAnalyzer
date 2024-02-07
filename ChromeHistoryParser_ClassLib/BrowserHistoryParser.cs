@@ -72,7 +72,6 @@ namespace BrowserHistoryParser_ClassLib
                 historyItem.Id = (long)historyRow["id"];
 
                 historyItems.Add(historyItem);
-
             }
 
             return historyItems;

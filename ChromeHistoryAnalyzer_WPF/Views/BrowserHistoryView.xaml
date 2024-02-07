@@ -75,8 +75,8 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn SortMemberPath="Url.AbsoluteUri" Width="350" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
-                    <DataGridTextColumn Width="200" IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
+                    <DataGridTextColumn SortMemberPath="Url.AbsoluteUri" Width="*" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
+                    <DataGridTextColumn Width="*" IsReadOnly="True" Header="Title" Binding="{Binding Title}"/>
                     <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding VisitedTime}"/>
                     <DataGridTextColumn IsReadOnly="True" Header="Browser" Binding="{Binding BrowserName}"/>
                     <DataGridTextColumn IsReadOnly="True" Header="Visit Count" Binding="{Binding VisitCount}"/>

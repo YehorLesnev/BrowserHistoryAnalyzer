@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace BrowserHistoryAnalyzer_WPF.ViewModels
+namespace BrowserHistoryAnalyzer_WPF.ViewModels.Commands
 {
     public class Command : ICommand
     {

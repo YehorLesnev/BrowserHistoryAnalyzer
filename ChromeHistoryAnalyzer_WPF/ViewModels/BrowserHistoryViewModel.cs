@@ -10,6 +10,7 @@ using BrowserHistoryAnalyzer_WPF.Models;
 using Microsoft.Win32;
 using System.Windows;
 using BrowserHistoryAnalyzer_WPF.Enums;
+using BrowserHistoryAnalyzer_WPF.ViewModels.Commands;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {

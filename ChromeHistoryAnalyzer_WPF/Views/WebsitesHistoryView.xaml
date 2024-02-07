@@ -53,9 +53,9 @@
                 </DataGrid.ContextMenu>
 
                 <DataGrid.Columns>
-                    <DataGridTextColumn Width="350" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
-                    <DataGridTextColumn IsReadOnly="True" Header="First Visited Time" Binding="{Binding FirstVisitedTime}"/>
-                    <DataGridTextColumn IsReadOnly="True" Header="Last Visited Time" Binding="{Binding LastVisitedTime}"/>
+                    <DataGridTextColumn Width="*" IsReadOnly="True" Header="URL" Binding="{Binding Url}"/>
+                    <DataGridTextColumn Width="*" MaxWidth="200" IsReadOnly="True" Header="First Visited Time" Binding="{Binding FirstVisitedTime}"/>
+                    <DataGridTextColumn Width="*" MaxWidth="200" IsReadOnly="True" Header="Last Visited Time" Binding="{Binding LastVisitedTime}"/>
                     <DataGridTextColumn IsReadOnly="True" Header="Visit Count" Binding="{Binding VisitCount}"/>
                     <DataGridTextColumn IsReadOnly="True" Header="Typed Count" Binding="{Binding TypedCount}"/>
                 </DataGrid.Columns>
