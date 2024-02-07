@@ -3,6 +3,11 @@ using BrowserHistoryParser_ClassLib;
 using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
+using System.Windows;
+using BrowserHistoryAnalyzer_WPF.Views.Modals;
+using LiveCharts;
+using LiveCharts.Defaults;
+using LiveCharts.Wpf;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels.Commands
 {
@@ -78,15 +83,15 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels.Commands
                             LastVisitedTime = g.Max(x => x.VisitedTime),
                         });
 
-                    _viewModel.Websites = _viewModel._mapper.Map<ObservableCollection<WebsiteViewModel>>(websites);
+                    _viewModel.Websites = _viewModel._mapper.Map<ObservableCollection<WebsiteViewModel>>(websites);                 
                 }
                 catch (SQLiteException e)
                 {
-                    _viewModel.showErrorModal("\"" + e.Message + "\" Try to close all browsers and their processes");
+                    MessageBox.Show("\"" + e.Message + "\" Try to close all browsers and their processes");
                 }
                 catch (Exception e)
                 {
-                    _viewModel.showErrorModal(e.Message);
+                    MessageBox.Show(e.Message);
                 }
             });
 

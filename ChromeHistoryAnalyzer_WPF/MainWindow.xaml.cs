@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using BrowserHistoryAnalyzer_WPF.Views;
+using System.Windows;
 
 namespace BrowserHistoryAnalyzer_WPF
 {
