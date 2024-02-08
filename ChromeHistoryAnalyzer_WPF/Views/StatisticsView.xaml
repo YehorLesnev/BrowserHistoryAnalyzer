@@ -8,7 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Grid.Row="0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -16,7 +21,6 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -27,7 +31,7 @@
                                           Hoverable="True"
                                           DataTooltip="{x:Null}"
                                           Width="Auto" 
-                                          Height="200"
+                                          Height="180"
                                           Series="{Binding BrowserUsageChartPieSeriesCollection}"
                                           >
                     </wpf:PieChart>
@@ -38,7 +42,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="180"></RowDefinition>
+                            <RowDefinition Height="150"></RowDefinition>
                         </Grid.RowDefinitions>
 
                         <StackPanel Grid.Row="0" Orientation="Horizontal">
@@ -72,8 +76,21 @@
                         </wpf:CartesianChart>
                     </Grid>
                 </StackPanel>
-
             </Grid>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+            <TextBlock HorizontalAlignment="Center" FontWeight="Bold">Browsing Activity</TextBlock>
+            <wpf:CartesianChart  Height="150" 
+                                 Series="{Binding ActivityVisitCountSeries}" 
+                                 Zoom="{Binding ActivityZoomingMode}">
+                <wpf:CartesianChart.AxisX>
+                    <wpf:Axis Title="Visited Time" LabelFormatter="{Binding ActivityDateTimeFormatter}"/>
+                </wpf:CartesianChart.AxisX>
+                <wpf:CartesianChart.AxisY>
+                    <wpf:Axis Title="Visit Count"/>
+                </wpf:CartesianChart.AxisY>
+            </wpf:CartesianChart>
         </StackPanel>
     </Grid>
 </UserControl>
