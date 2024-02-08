@@ -18,7 +18,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels.Commands
         {
             this._viewModel = browserHistoryViewModel;
         }
-
+        
         public override bool CanExecute()
         {
             return !RunningTasks.Any();
@@ -27,7 +27,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels.Commands
         public override async Task ExecuteAsync()
         {
             _viewModel.IsLoading = true;
-
+    
             await Task.Run(() =>
             {
                 try

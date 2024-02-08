@@ -4,5 +4,6 @@
     {
         BrowserHistory = 0,
         WebsitesHistory = 1,
+        Statistics = 2,
     }
 }

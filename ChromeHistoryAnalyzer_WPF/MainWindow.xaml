@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:BrowserHistoryAnalyzer_WPF.Views"
         xmlns:li="http://github.com/zeluisping/loadingIndicators/xaml/controls"
+        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="Browser History Analyzer" Height="450" Width="950" WindowStartupLocation="CenterScreen"
         >
 
     <Window.InputBindings>
-        <KeyBinding Key="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
+        <KeyBinding Key="F5" Command="{Binding Path=GetAllHistoryWithOptionsAsync}"/>
         <KeyBinding Key="F9" Command="{Binding Path=ShowOptionsWindow}"/>
         <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding Path=SaveAll}"/>
     </Window.InputBindings>
@@ -26,7 +27,7 @@
                 <MenuItem Header="_View">
                     <MenuItem Header="_Options" InputGestureText="F9" Command="{Binding Path=ShowOptionsWindow}"/>
                     <Separator/>
-                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptions}"/>
+                    <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptionsAsync}"/>
                 </MenuItem>
             </Menu>
 
@@ -40,7 +41,7 @@
                 </TabItem>
                 
                 <TabItem Header="Statistics">
-                    <views:StatisticsView />
+                    <views:StatisticsView />                  
                 </TabItem>
             </TabControl>
         </DockPanel>

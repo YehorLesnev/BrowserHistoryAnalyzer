@@ -2,15 +2,19 @@
 using BrowserHistoryAnalyzer_WPF.Views.Modals;
 using BrowserHistoryParser_ClassLib;
 using System.Collections.ObjectModel;
-using System.Data.SQLite;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Windows.Input;
 using BrowserHistoryAnalyzer_WPF.Models;
 using Microsoft.Win32;
 using System.Windows;
 using BrowserHistoryAnalyzer_WPF.Enums;
 using BrowserHistoryAnalyzer_WPF.ViewModels.Commands;
+using LiveCharts;
+using LiveCharts.Configurations;
+using LiveCharts.Defaults;
+using LiveCharts.Helpers;
+using LiveCharts.Wpf;
+using System.Collections.Generic;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
@@ -18,7 +22,22 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
     {
         public readonly BrowserHistoryParser _parser = new();
         public Options HistoryOptions { get; set; } = new();
-        public int CurrentTabIndex { get; set; }
+
+        private int _currentTabIndex;
+        public int CurrentTabIndex
+        {
+            get => _currentTabIndex;
+            set
+            {
+                _currentTabIndex = value;
+                OnPropertyChanged();
+
+                if ((int)MainTabIndex.Statistics == value)
+                {
+                    refreshCharts(null);
+                }
+            }
+        }
 
         private bool _isLoading;
         public bool IsLoading
@@ -30,7 +49,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         private ObservableCollection<HistoryItemViewModel>? _historyItems;
         public ObservableCollection<HistoryItemViewModel>? HistoryItems
         {
@@ -53,18 +72,88 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             }
         }
 
+        // For charts
+        public SeriesCollection BrowserUsageChartPieSeriesCollection { get; set; }
+
+        public ChartValues<Website> WebsitesChartCollection { get; set; } = new();
+        public ObservableCollection<string> WebsitesChartLabels { get; set; } = new();
+        public object WebsitesChartMapper { get; set; }
+
+
+
         public BrowserHistoryViewModel()
         {
-            GetAllHistoryWithOptions = new CommandLoadHistoryAsync(this);
+            GetAllHistoryWithOptionsAsync = new CommandLoadHistoryAsync(this);
             ShowOptionsWindow = new Command(showOptionsWindow);
             SaveSelectedItemsToFile = new Command(saveSelectedItemsToFile);
             CopySelectedUrls = new Command(copySelectedUrls);
             OpenUrlInWebBrowser = new Command(openUrlInWebBrowser);
             SaveAll = new Command(saveAll);
+            RefreshCharts = new Command(refreshCharts);
             //ShowErrorModal = new Command(showErrorModal);
+            WebsiteChartSearchTextChanged = new Command(websiteChartSearchTextChanged);
+
+            BrowserUsageChartPieSeriesCollection = new SeriesCollection()
+            {
+                new PieSeries
+                {
+                    Title = "Chrome",
+                    Values = new ChartValues<ObservableValue> { new(0) },
+                    DataLabels = true,
+                    LabelPoint = chartPoint => $"({chartPoint.Participation:P})",
+                    Fill = System.Windows.Media.Brushes.Red
+                },
+                new PieSeries
+                {
+                    Title = "Firefox",
+                    Values = new ChartValues<ObservableValue> { new(0)  },
+                    DataLabels = true,
+                    LabelPoint = chartPoint => $"({chartPoint.Participation:P})",
+                    Fill = System.Windows.Media.Brushes.Orange
+                },
+                new PieSeries
+                {
+                    Title = "Edge",
+                    Values = new ChartValues<ObservableValue> { new(0) },
+                    DataLabels = true,
+                    LabelPoint = chartPoint => $"({chartPoint.Participation:P})",
+                    Fill = System.Windows.Media.Brushes.DeepSkyBlue
+                },
+            };
+
+            // configure the chart to plot websites
+            WebsitesChartMapper = Mappers.Xy<Website>()
+                .X((website, index) => index)
+                .Y(website => website.VisitCount);
         }
 
-        public ICommandAsync GetAllHistoryWithOptions { get; set; }
+        public ICommand WebsiteChartSearchTextChanged {get; set;}
+        private void websiteChartSearchTextChanged(object o)
+        {
+            var text = ((string) o);
+
+            if (Websites != null)
+            {
+                var records = Websites
+                    .Where(x => x.Url != null && x.Url.Contains(text))
+                    .OrderByDescending(x => x.VisitCount)
+                    .Take(15);
+
+                var websites = _mapper.Map<ObservableCollection<Website>>(records);
+
+                WebsitesChartCollection.Clear();
+                WebsitesChartCollection.AddRange(websites);
+            
+                WebsitesChartLabels.Clear();
+
+                foreach (var website in websites) 
+                {
+                    WebsitesChartLabels.Add(website.Url);
+                }
+            }
+        }
+
+        public ICommandAsync GetAllHistoryWithOptionsAsync { get; set; }
 
         public ICommand ShowOptionsWindow { get; set; }
         private void showOptionsWindow(object o)
@@ -228,7 +317,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "Text file (*.txt)|*.txt";
                 saveFileDialog.Title = "Save as...";
-
+                
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     File.WriteAllText(saveFileDialog.FileName, text);
@@ -240,8 +329,62 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             }
         }
 
+        public ICommand RefreshCharts { get; set; }
+        private void refreshCharts(object? o)
+        {
+            if (HistoryItems != null)
+            {
+                BrowserUsageChartPieSeriesCollection.Clear();
+                BrowserUsageChartPieSeriesCollection.AddRange(
+                    [
+                        new PieSeries
+                        {
+                            Title = "Chrome",
+                            Values = new ChartValues<ObservableValue>
+                                { new(HistoryItems.Count(x => x.BrowserName == BrowserName.Chrome)) },
+                            DataLabels = true,
+                            LabelPoint = chartPoint => $"({chartPoint.Participation:P})",
+                            Fill = System.Windows.Media.Brushes.Red
+                        },
+                        new PieSeries
+                        {
+                            Title = "Firefox",
+                            Values = new ChartValues<ObservableValue> { new(HistoryItems.Count(x => x.BrowserName == BrowserName.Firefox)) },
+                            DataLabels = true,
+                            LabelPoint = chartPoint => $"({chartPoint.Participation:P})",
+                            Fill = System.Windows.Media.Brushes.Orange
+                        },
+                        new PieSeries
+                        {
+                            Title = "Edge",
+                            Values = new ChartValues<ObservableValue> { new(HistoryItems.Count(x => x.BrowserName == BrowserName.Edge)) },
+                            DataLabels = true,
+                            LabelPoint = chartPoint => $"({chartPoint.Participation:P})",
+                            Fill = System.Windows.Media.Brushes.DeepSkyBlue
+                        },
+                    ]
+                    );
+
+                // take the first 15 records by default
+                if (Websites != null)
+                {
+                    var records = _mapper.Map<ObservableCollection<Website>>(Websites.OrderByDescending(x => x.VisitCount).Take(15)).ToArray();
+
+                    WebsitesChartCollection.Clear();
+                    WebsitesChartCollection.AddRange(records);
+
+                    WebsitesChartLabels.Clear();
+                    var urls = records.Select(x => x.Url);
+                    foreach (var u in urls)
+                    {
+                        WebsitesChartLabels.Add(u);
+                    }
+                }
+            }
+        }
+
         //public ICommand ShowErrorModal { get; set; }
-        public void showErrorModal(object o)
+        private void showErrorModal(object o)
         {
             var errWindow = new ErrorMessageWindow
             {

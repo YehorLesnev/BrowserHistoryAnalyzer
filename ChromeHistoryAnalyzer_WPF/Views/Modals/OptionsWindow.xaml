@@ -23,7 +23,7 @@
                             Margin="5" 
                             Grid.Column="0" 
                             IsDefault="True" 
-                            Command="{Binding Path=GetAllHistoryWithOptions}"
+                            Command="{Binding Path=GetAllHistoryWithOptionsAsync}"
                             Click="ButtonOptionsClose">
                         Ok
                     </Button>
