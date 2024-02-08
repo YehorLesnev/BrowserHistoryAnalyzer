@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <None Remove="browser_history_icon.png" />
+    <None Remove="Views\Modals\browser_history_icon.png" />
+    <None Remove="Views\Modals\info_icon.png" />
     <None Remove="Views\Modals\Warning.png" />
   </ItemGroup>
 
@@ -32,6 +34,8 @@
 
   <ItemGroup>
     <Resource Include="browser_history_icon.png" />
+    <Resource Include="Views\Modals\browser_history_icon.png" />
+    <Resource Include="Views\Modals\info_icon.png" />
     <Resource Include="Views\Modals\Warning.png" />
   </ItemGroup>
 

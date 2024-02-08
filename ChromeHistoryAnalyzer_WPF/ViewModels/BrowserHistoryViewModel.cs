@@ -2,7 +2,6 @@
 using BrowserHistoryAnalyzer_WPF.Views.Modals;
 using BrowserHistoryParser_ClassLib;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
 using BrowserHistoryAnalyzer_WPF.Models;
@@ -15,7 +14,6 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using System;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels
 {
@@ -101,6 +99,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         {
             GetAllHistoryWithOptionsAsync = new CommandLoadHistoryAsync(this);
             ShowOptionsWindow = new Command(showOptionsWindow);
+            ShowAboutWindow = new Command(showAboutWindow);
             SaveSelectedItemsToFile = new Command(saveSelectedItemsToFile);
             CopySelectedUrls = new Command(copySelectedUrls);
             OpenUrlInWebBrowser = new Command(openUrlInWebBrowser);
@@ -424,6 +423,13 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             {
                 showErrorModal(e.Message);
             }
+        }
+
+        public ICommand ShowAboutWindow { get; set; }
+        private void showAboutWindow(object o)
+        {
+            var aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
         }
 
         private void showErrorModal(object o)

@@ -29,6 +29,9 @@
                     <Separator/>
                     <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptionsAsync}"/>
                 </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" Command="{Binding Path=ShowAboutWindow}"/>                  
+                </MenuItem>
             </Menu>
 
             <TabControl SelectedIndex="{Binding CurrentTabIndex}">
