@@ -23,7 +23,7 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_Save All" InputGestureText="Ctrl+Shift+S" Command="{Binding Path=SaveAll}"/>
                     <Separator/>
-                    <MenuItem Header="_Delete Selected Items" InputGestureText="Ctrl+Delrete"                                      
+                    <MenuItem Header="_Delete Selected Items" InputGestureText="Ctrl+Delete"                                      
                               CommandParameter="{Binding  ElementName=BrowserHistoryViewName, 
                                                           Path=DataGridHistory.SelectedItems}"
                               Command="{Binding Path=DeleteSelectedHistoryItems}"

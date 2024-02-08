@@ -23,6 +23,9 @@
         <KeyBinding Key="F6"
                     CommandParameter="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItem}" 
                     Command="{Binding Path=OpenUrlInWebBrowser}"/>
+        <KeyBinding Key="Delete" Modifiers="Control" 
+                    CommandParameter="{Binding Source={x:Reference DataGridBrowserHistory}, Path=SelectedItems}" 
+                    Command="{Binding Path=DeleteSelectedHistoryItems}"/>
     </UserControl.InputBindings>
 
     <Grid>
@@ -56,6 +59,9 @@
                         <MenuItem Header="Open URL in Web Browser" InputGestureText="F6"
                               CommandParameter="{Binding PlacementTarget.SelectedItem, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
                               Command="{Binding Path=OpenUrlInWebBrowser}"/>
+                        <MenuItem Header="Delete Selected Items" InputGestureText="Ctrl+Delete"
+                              CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource FindAncestor,AncestorType=ContextMenu}}"
+                              Command="{Binding Path=DeleteSelectedHistoryItems}"/>
                         <Separator/>
                         <MenuItem Header="Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptionsAsync}"/>
                     </ContextMenu>
