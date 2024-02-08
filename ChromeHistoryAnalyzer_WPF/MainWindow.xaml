@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:BrowserHistoryAnalyzer_WPF.Views"
         xmlns:li="http://github.com/zeluisping/loadingIndicators/xaml/controls"
-        xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="Browser History Analyzer" Height="450" Width="950" WindowStartupLocation="CenterScreen"
+        Title="Browser History Analyzer" Height="450" Width="950" WindowStartupLocation="CenterScreen" 
+        Icon="/browser_history_icon.png"
         >
 
     <Window.InputBindings>

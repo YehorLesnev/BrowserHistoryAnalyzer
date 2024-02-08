@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="browser_history_icon.png" />
     <None Remove="Views\Modals\Warning.png" />
   </ItemGroup>
 
@@ -30,6 +31,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="browser_history_icon.png" />
     <Resource Include="Views\Modals\Warning.png" />
   </ItemGroup>
 

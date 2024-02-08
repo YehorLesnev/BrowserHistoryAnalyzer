@@ -32,7 +32,7 @@
             <DataGrid
              x:Name="DataGridWebsitesHistory"
              ItemsSource="{Binding Websites}"
-             AutoGenerateColumns="False"
+             AutoGenerateColumns="False" AlternationCount="2" AlternatingRowBackground="#FFE7F7FF"
              >
 
                 <DataGrid.ContextMenu>
