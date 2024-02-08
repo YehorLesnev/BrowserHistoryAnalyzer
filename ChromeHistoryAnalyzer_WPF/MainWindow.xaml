@@ -14,6 +14,7 @@
         <KeyBinding Key="F5" Command="{Binding Path=GetAllHistoryWithOptionsAsync}"/>
         <KeyBinding Key="F9" Command="{Binding Path=ShowOptionsWindow}"/>
         <KeyBinding Key="S" Modifiers="Ctrl+Shift" Command="{Binding Path=SaveAll}"/>
+        <KeyBinding Key="Delete" Modifiers="Ctrl" Command="{Binding Path=DeleteSelectedHistoryItems}"/>
     </Window.InputBindings>
 
     <Grid>
@@ -21,6 +22,12 @@
             <Menu DockPanel.Dock="Top" FontSize="12">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Save All" InputGestureText="Ctrl+Shift+S" Command="{Binding Path=SaveAll}"/>
+                    <Separator/>
+                    <MenuItem Header="_Delete Selected Items" InputGestureText="Ctrl+Delrete"                                      
+                              CommandParameter="{Binding  ElementName=BrowserHistoryViewName, 
+                                                          Path=DataGridHistory.SelectedItems}"
+                              Command="{Binding Path=DeleteSelectedHistoryItems}"
+                              />
                     <Separator/>
                     <MenuItem Header="_Exit" Click="MenuItemExit_Click"/>
                 </MenuItem>
@@ -30,21 +37,21 @@
                     <MenuItem Header="_Refresh" InputGestureText="F5" Command="{Binding Path=GetAllHistoryWithOptionsAsync}"/>
                 </MenuItem>
                 <MenuItem Header="_Help">
-                    <MenuItem Header="_About" Command="{Binding Path=ShowAboutWindow}"/>                  
+                    <MenuItem Header="_About" Command="{Binding Path=ShowAboutWindow}"/>
                 </MenuItem>
             </Menu>
 
             <TabControl SelectedIndex="{Binding CurrentTabIndex}">
                 <TabItem Header="History">
-                    <views:BrowserHistoryView />
+                    <views:BrowserHistoryView x:Name="BrowserHistoryViewName"/>
                 </TabItem>
-                
+
                 <TabItem Header="Websites">
                     <views:WebsitesHistoryView />
                 </TabItem>
-                
+
                 <TabItem Header="Statistics">
-                    <views:StatisticsView />                  
+                    <views:StatisticsView />
                 </TabItem>
             </TabControl>
         </DockPanel>
@@ -62,7 +69,7 @@
                     </Style.Triggers>
                 </Style>
             </StackPanel.Style>
-            
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />

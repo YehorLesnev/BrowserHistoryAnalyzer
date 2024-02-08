@@ -4,10 +4,6 @@ using System.Collections.ObjectModel;
 using System.Data.SQLite;
 using System.Text.RegularExpressions;
 using System.Windows;
-using BrowserHistoryAnalyzer_WPF.Views.Modals;
-using LiveCharts;
-using LiveCharts.Defaults;
-using LiveCharts.Wpf;
 
 namespace BrowserHistoryAnalyzer_WPF.ViewModels.Commands
 {

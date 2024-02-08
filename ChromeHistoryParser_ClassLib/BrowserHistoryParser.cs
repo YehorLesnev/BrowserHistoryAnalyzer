@@ -10,6 +10,10 @@ namespace BrowserHistoryParser_ClassLib
         private readonly string _firefoxFolder = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Mozilla\Firefox\Profiles\";
         private readonly string _firefoxHistoryFileName = @"places.sqlite";
 
+        /// <summary>
+        /// Returns all history items from Google Chrome, Mozilla Firefox and Microsoft Edge
+        /// </summary>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         public IEnumerable<HistoryItem> GetAllHistoryItems()
         {
             List<HistoryItem> historyItems = new List<HistoryItem>();
@@ -30,7 +34,7 @@ namespace BrowserHistoryParser_ClassLib
         /// Throws SQLiteException 'database is locked' exception if there's already opened connection to the database (history file).
         /// Closing Chrome browser must solve this error
         /// </remarks>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetChromeHistoryItems()
         {
@@ -99,7 +103,7 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <param name="containOneOf">Array of strings that may (or not) contain in URL</param>
         /// <param name="mustContain">Determines whether the HistoryItem URL must contain one of the strings in the array</param>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetChromeHistoryItems(string[] containOneOf, bool mustContain)
         {
@@ -194,7 +198,7 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <param name="containOneOf">Array of strings that may contain in URL</param>
         /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetChromeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
         {
@@ -290,7 +294,7 @@ namespace BrowserHistoryParser_ClassLib
         /// Throws SQLiteException 'database is locked' exception if there's already opened connection to the database (history file).
         /// Closing Edge browser and ending Edge processes must solve this error
         /// </remarks>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetEdgeHistoryItems()
         {
@@ -360,7 +364,7 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <param name="containOneOf">Array of strings that may (or not) contain in URL</param>
         /// <param name="mustContain">Determines whether the HistoryItem URL must contain one of the strings in the array</param>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetEdgeHistoryItems(string[] containOneOf, bool mustContain)
         {
@@ -456,7 +460,7 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <param name="containOneOf">Array of strings that may contain in URL</param>
         /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetEdgeHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
         {
@@ -553,7 +557,7 @@ namespace BrowserHistoryParser_ClassLib
         /// Throws SQLiteException 'database is locked' exception if there's already opened connection to the database (history file).
         /// Closing Firefox browser must solve this error
         /// </remarks>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetFirefoxHistoryItems()
         {
@@ -630,7 +634,7 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <param name="containOneOf">Array of strings that may (or not) contain in URL</param>
         /// <param name="mustContain">Determines whether the HistoryItem URL must contain one of the strings in the array</param>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetFirefoxHistoryItems(string[] containOneOf, bool mustContain)
         {
@@ -733,7 +737,7 @@ namespace BrowserHistoryParser_ClassLib
         /// </remarks>
         /// <param name="containOneOf">Array of strings that may contain in URL</param>
         /// <param name="dontContainAnyOf">Array of strings that don't contain in any URL</param>
-        /// <returns>List&lt;HistoryItem&gt;</returns>
+        /// <returns>IEnumerable&lt;HistoryItem&gt;</returns>
         /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
         public IEnumerable<HistoryItem> GetFirefoxHistoryItems(string[] containOneOf, string[] dontContainAnyOf)
         {
@@ -838,6 +842,66 @@ namespace BrowserHistoryParser_ClassLib
             }
 
             return folder;
+        }
+
+        /// <summary>
+        /// Deletes HistoryItems from browser History file by HistoryItem Id
+        /// </summary>
+        /// <param name="historyItems">Collection of HistoryItems to delete</param>
+        /// <returns>void</returns>
+        /// <exception cref="SQLiteException">'database is locked' means that there's already opened connection to the database (history file)</exception>
+        public void DeleteHistoryItemsById(ICollection<HistoryItem> historyItems)
+        {
+            if (historyItems.Count > 0)
+            {             
+                string firefoxHistoryFile = FindFirefoxProfileFolderPath(_firefoxFolder) + "\\" + _firefoxHistoryFileName;
+                string query;
+
+                foreach (HistoryItem historyItem in historyItems)
+                {
+                    switch (historyItem.BrowserName)
+                    {
+                        case BrowserName.Chrome:
+                            using (SQLiteConnection connection = new SQLiteConnection
+                                      ("Data Source=" + _chromeHistoryFile + ";Version=3;New=False;Compress=True;"))
+                            {
+                                connection.Open();
+                                query = $"DELETE FROM urls WHERE id = {historyItem.Id}";
+                                SQLiteCommand comp = new SQLiteCommand(query, connection);
+                                comp.CommandType = CommandType.Text;
+                                comp.ExecuteNonQuery();
+                                connection.Close();
+                            }
+                            break;
+
+                        case BrowserName.Firefox:
+                            using (SQLiteConnection connection = new SQLiteConnection
+                                       ("Data Source=" + firefoxHistoryFile + ";Version=3;New=False;Compress=True;"))
+                            {
+                                connection.Open();
+                                query = $"DELETE FROM moz_places WHERE id = {historyItem.Id}";
+                                SQLiteCommand comp = new SQLiteCommand(query, connection);
+                                comp.CommandType = CommandType.Text;
+                                comp.ExecuteNonQuery();
+                                connection.Close();
+                            }
+                            break;
+
+                        case BrowserName.Edge:
+                            using (SQLiteConnection connection = new SQLiteConnection
+                                       ("Data Source=" + _edgeHistoryFile + ";Version=3;New=False;Compress=True;"))
+                            {
+                                connection.Open();
+                                query = $"DELETE FROM urls WHERE id = {historyItem.Id}";
+                                SQLiteCommand comp = new SQLiteCommand(query, connection);
+                                comp.CommandType = CommandType.Text;
+                                comp.ExecuteNonQuery();
+                                connection.Close();
+                            }
+                            break;
+                    }
+                }
+            }
         }
     }
 }

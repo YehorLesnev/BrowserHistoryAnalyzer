@@ -2,6 +2,7 @@
 using BrowserHistoryAnalyzer_WPF.Views.Modals;
 using BrowserHistoryParser_ClassLib;
 using System.Collections.ObjectModel;
+using System.Data.SQLite;
 using System.IO;
 using System.Windows.Input;
 using BrowserHistoryAnalyzer_WPF.Models;
@@ -106,6 +107,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             SaveAll = new Command(saveAll);
             RefreshCharts = new Command(refreshCharts);
             WebsiteChartSearchTextChanged = new Command(websiteChartSearchTextChanged);
+            DeleteSelectedHistoryItems = new Command(deleteSelectedHistoryItems);
 
             // configure the chart to plot websites
             WebsitesChartMapper = Mappers.Xy<Website>()
@@ -204,7 +206,7 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 }
                 catch (Exception e)
                 {
-                    return;
+                    showErrorModal(e.Message);
                 }
 
                 if (selectedItems is not null && selectedItems.Count > 0)
@@ -322,6 +324,39 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
             }
         }
 
+        public ICommand DeleteSelectedHistoryItems { get; set; }
+        private void deleteSelectedHistoryItems(object o)
+        {
+            List<HistoryItemViewModel> selectedItems = null;
+
+            try
+            {
+                selectedItems = (o as IList ?? throw new InvalidOperationException()).Cast<HistoryItemViewModel>().ToList();
+            }
+            catch (Exception e)
+            {
+                showErrorModal(e.Message);
+            }
+
+            try
+            {
+                if (selectedItems is not null && selectedItems.Count > 0)
+                {
+                    _parser.DeleteHistoryItemsById(_mapper.Map<ObservableCollection<HistoryItem>>(selectedItems));
+
+                    MessageBox.Show("Selected items were successfully deleted");
+                }
+            }
+            catch (SQLiteException e)
+            {
+                showErrorModal("\"" + e.Message + "\" Try to close all browsers and their processes");
+            }
+            catch (Exception e)
+            {
+                showErrorModal(e.Message);
+            }
+        }
+
         public ICommand RefreshCharts { get; set; }
         private void refreshCharts(object? o)
         {
@@ -403,11 +438,11 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                     gradientBrush.GradientStops.Add(new GradientStop(Colors.Transparent, 1));
 
                     // if there's only one ObservablePoint in ChartValues than program crashes for some reason (LiveCharts issue)
-                    if(chartValues.Count == 1)
+                    if (chartValues.Count == 1)
                     {
                         chartValues.Add(new ObservablePoint(DateTime.MinValue.Date.Ticks - 1, 0));
                     }
-                    
+
                     // Add the LineSeries to the SeriesCollection
                     ActivityVisitCountSeries.Add(new LineSeries
                     {

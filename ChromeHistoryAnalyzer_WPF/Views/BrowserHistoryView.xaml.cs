@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace BrowserHistoryAnalyzer_WPF.Views
 {
@@ -7,6 +8,8 @@ namespace BrowserHistoryAnalyzer_WPF.Views
     /// </summary>
     public partial class BrowserHistoryView : UserControl
     {
+        public DataGrid DataGridHistory => DataGridBrowserHistory;
+
         public BrowserHistoryView()
         {
             InitializeComponent();
