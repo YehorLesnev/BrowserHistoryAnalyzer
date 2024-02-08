@@ -344,7 +344,11 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                 {
                     _parser.DeleteHistoryItemsById(_mapper.Map<ObservableCollection<HistoryItem>>(selectedItems));
 
-                    MessageBox.Show("Selected items were successfully deleted");
+                    var successDeleted = new SuccessfulDeletionWindow()
+                    {
+                        DataContext = this
+                    };
+                    successDeleted.ShowDialog();
                 }
             }
             catch (SQLiteException e)
