@@ -327,6 +327,8 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
         public ICommand DeleteSelectedHistoryItems { get; set; }
         private void deleteSelectedHistoryItems(object o)
         {
+            if(HistoryItems is null || HistoryItems.Count == 0) return;
+
             List<HistoryItemViewModel> selectedItems = null;
 
             try
@@ -348,6 +350,12 @@ namespace BrowserHistoryAnalyzer_WPF.ViewModels
                     {
                         DataContext = this
                     };
+
+                    foreach (var item in selectedItems)
+                    {
+                        HistoryItems.Remove(item);
+                    }
+
                     successDeleted.ShowDialog();
                 }
             }
